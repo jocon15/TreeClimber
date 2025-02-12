@@ -1,0 +1,93 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\Repos\\TreeClimber\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{BF0C6FB7-998D-48B0-8985-854C47C4BE13}|TreeClimberCore\\TreeClimberCore.csproj|d:\\repos\\treeclimber\\treeclimbercore\\services\\json\\jsondataservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{BF0C6FB7-998D-48B0-8985-854C47C4BE13}|TreeClimberCore\\TreeClimberCore.csproj|solutionrelative:treeclimbercore\\services\\json\\jsondataservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1F0A2931-BF76-4DB2-8595-7652AB1AE73B}|TreeClimber\\TreeClimber.csproj|d:\\repos\\treeclimber\\treeclimber\\components\\pages\\home.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{1F0A2931-BF76-4DB2-8595-7652AB1AE73B}|TreeClimber\\TreeClimber.csproj|solutionrelative:treeclimber\\components\\pages\\home.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1F0A2931-BF76-4DB2-8595-7652AB1AE73B}|TreeClimber\\TreeClimber.csproj|d:\\repos\\treeclimber\\treeclimber\\components\\pages\\counter.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{1F0A2931-BF76-4DB2-8595-7652AB1AE73B}|TreeClimber\\TreeClimber.csproj|solutionrelative:treeclimber\\components\\pages\\counter.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 196,
+          "SelectedChildIndex": 8,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{e506b91c-c606-466a-90a9-123d1d1e12b3}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:129:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Home.razor",
+              "DocumentMoniker": "D:\\Repos\\TreeClimber\\TreeClimber\\Components\\Pages\\Home.razor",
+              "RelativeDocumentMoniker": "TreeClimber\\Components\\Pages\\Home.razor",
+              "ToolTip": "D:\\Repos\\TreeClimber\\TreeClimber\\Components\\Pages\\Home.razor",
+              "RelativeToolTip": "TreeClimber\\Components\\Pages\\Home.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-02-12T02:55:06.212Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Counter.razor",
+              "DocumentMoniker": "D:\\Repos\\TreeClimber\\TreeClimber\\Components\\Pages\\Counter.razor",
+              "RelativeDocumentMoniker": "TreeClimber\\Components\\Pages\\Counter.razor",
+              "ToolTip": "D:\\Repos\\TreeClimber\\TreeClimber\\Components\\Pages\\Counter.razor",
+              "RelativeToolTip": "TreeClimber\\Components\\Pages\\Counter.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-02-12T02:55:04.227Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "JSONDataService.cs",
+              "DocumentMoniker": "D:\\Repos\\TreeClimber\\TreeClimberCore\\Services\\JSON\\JSONDataService.cs",
+              "RelativeDocumentMoniker": "TreeClimberCore\\Services\\JSON\\JSONDataService.cs",
+              "ToolTip": "D:\\Repos\\TreeClimber\\TreeClimberCore\\Services\\JSON\\JSONDataService.cs",
+              "RelativeToolTip": "TreeClimberCore\\Services\\JSON\\JSONDataService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-12T02:52:47.863Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
