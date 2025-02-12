@@ -1,7 +1,17 @@
 ﻿@page "/"
 
+@rendermode InteractiveServer
+@inject NavigationManager navManager
+
 <PageTitle>Home</PageTitle>
 
-<h1>Hello, world!</h1>
+<h1>Welcome to TreeClimber, the easy way to edit JSON in a tree view.</h1>
 
-Welcome to your new app.
+<button @onclick=@NavigateToImport>Import JSON File</button>
+
+@code{
+	private void NavigateToImport()
+	{
+		navManager.NavigateTo("/import");
+	}
+}
