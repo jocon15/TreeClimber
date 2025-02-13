@@ -187,8 +187,10 @@ DocProject/Help/html
 
 # Click-Once directory
 publish/
+Tests/obj
 TreeClimber/obj/
 TreeClimberCore/obj/
+Tests/bin
 TreeClimber/bin/
 TreeClimberCore/bin/
 
