@@ -1,0 +1,39 @@
+﻿@*Context menu for arrays*@
+<ContextMenu Id="JArrayContextMenu">
+	<Item Enabled="false">Array Tools</Item>
+	<Seperator />
+	@if (IsReadOnly == true)
+	{
+		// guest only has access to copy
+		// user viewing a record from the form table only has access to copy
+		<Item OnClick=@Copy><ClipboardIcon /> Copy</Item>
+	}
+	else
+	{
+		<Item OnClick=@Add><PencilIcon /> Add</Item>
+		<Item OnClick=@Copy><ClipboardIcon /> Copy</Item>
+		<Item OnClick=@Rename><CursorIcon /> Rename</Item>
+		<Item OnClick=@Delete><TrashIcon /> Delete One</Item>
+		<Item OnClick=@DeleteAll><TrashIcon /> Delete All</Item>
+	}
+</ContextMenu>
+
+@code {
+	[Parameter]
+	public bool IsReadOnly { get; set; }
+
+	[Parameter]
+	public EventCallback<ItemClickEventArgs> Add { get; set; }
+
+	[Parameter]
+	public EventCallback<ItemClickEventArgs> Copy { get; set; }
+
+	[Parameter]
+	public EventCallback<ItemClickEventArgs> Rename { get; set; }
+
+	[Parameter]
+	public EventCallback<ItemClickEventArgs> Delete { get; set; }
+
+	[Parameter]
+	public EventCallback<ItemClickEventArgs> DeleteAll { get; set; }
+}

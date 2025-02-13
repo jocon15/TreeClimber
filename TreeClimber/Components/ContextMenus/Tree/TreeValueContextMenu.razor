@@ -1,0 +1,21 @@
+﻿@inject CurrentUser currentUser
+
+@*Context menu for values*@
+<ContextMenu Id="JValueContextMenu">
+    <Item Enabled="false">Value Tools</Item>
+    <Seperator />
+    @if (IsReadOnly == false)
+	{
+		// admins can rename keys
+		// users not editing in the form table can rename keys
+        <Item OnClick=@Rename><CursorIcon /> Rename</Item>
+    }
+</ContextMenu>
+
+@code {
+	[Parameter]
+	public bool IsReadOnly { get; set; }
+
+	[Parameter]
+	public EventCallback<ItemClickEventArgs> Rename { get; set; }
+}
