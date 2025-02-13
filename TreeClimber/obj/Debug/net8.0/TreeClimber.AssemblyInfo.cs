@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("TreeClimber")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5dec03e8f0c5334f0681fd23a4e376970e297710")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2c247abe8082e81b0854c396f1ee5c45904c4f43")]
 [assembly: System.Reflection.AssemblyProductAttribute("TreeClimber")]
 [assembly: System.Reflection.AssemblyTitleAttribute("TreeClimber")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
