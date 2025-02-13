@@ -1,0 +1,77 @@
+﻿@inject IJSRuntime JSRuntime
+@inject TreeDataService treeDataService
+@inject IToastService toastService
+
+<div class="modal fade show" id="copyModal" style="display:block; background-color: rgba(10,10,10,.8);" aria-modal="true" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header dark">
+                <h4 class="modal-title">Copy Object Element</h4>
+                <button type="button" class="modal-close-btn" @onclick=@ModalCancel>&#10005;</button>
+            </div>
+            <div class="modal-body dark">
+                <h5 class="form-element-title">Element to Copy: </h5>
+                <select class="combobox" @bind=@_keyToCopy>
+                    <option value=@_keyToCopy selected disabled hidden>@_keyToCopy</option>
+                    @foreach (string key in GetChildKeys())
+                    {
+                        <option>@key</option>
+                    }
+                </select>   
+            </div>
+            <ConditionalModalErrorMessage ErrorMessage=@_errorMessage />
+            <div class="modal-footer dark">
+                <button type="button" class="add-btn" @onclick=@ModalCopyElement>Copy</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public string Path { get; set; }
+
+    [Parameter]
+    public EventCallback OnClose { get; set; }
+
+    private string _keyToCopy = "";
+
+    private string _errorMessage = "";
+
+    private List<string> GetChildKeys()
+    {
+        Tuple<int, string, JToken?> result = treeDataService.AccessData(Path);
+
+        JObject jobj = (JObject)result.Item3;
+
+        return jobj.Properties().Select(p => p.Name).ToList();
+    }
+
+    private Task ModalCancel() => OnClose.InvokeAsync();
+
+    // this method must be async because the JavaScript copy function is async
+    private async Task ModalCopyElement()
+    {
+        Tuple<int, string, JToken?> result = treeDataService.GetObjectElement(Path, _keyToCopy);
+
+        if (result.Item1 != ResponseUtil.OK)
+        {
+            _errorMessage = result.Item2;
+            // reload modal but don't close it
+            StateHasChanged();
+            return;
+        }
+
+        await CopyTextToClipboard(result.Item3.ToString());
+
+        toastService.ShowInfo($"Copied element at path: {Path}.{_keyToCopy}");
+
+        await OnClose.InvokeAsync();
+    }
+
+    private async Task CopyTextToClipboard(string text)
+    {
+        // reminder this js function is implemented in Pages/_Host.cshtml
+        await JSRuntime.InvokeVoidAsync("clipboardCopy.copyText", text);
+    }
+}

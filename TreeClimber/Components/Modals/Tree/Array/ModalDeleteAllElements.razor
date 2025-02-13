@@ -1,0 +1,51 @@
+﻿@inject TreeDataService treeDataService
+@inject IToastService toastService
+
+<div class="modal fade show" id="addModal" style="display:block; background-color: rgba(10,10,10,.8);" aria-modal="true" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header dark">
+                <h4 class="modal-title">Delete All Array Elements</h4>
+                <button type="button" class="modal-close-btn" @onclick=@ModalCancel>&#10005;</button>
+            </div>
+            <div class="modal-body dark">
+                <div>
+                    <text class="normal-text">Are you sure you want to delete all elements in this array?</text>
+                </div>
+            </div>
+            <ConditionalModalErrorMessage ErrorMessage=@_errorMessage />
+            <div class="modal-footer dark">
+                <button type="button" class="remove-btn" @onclick=@ModalDeleteAllArrayElements>Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public string? Path { get; set; }
+
+    [Parameter]
+    public EventCallback OnClose { get; set; }
+
+    private string _errorMessage = "";
+
+    private Task ModalCancel() => OnClose.InvokeAsync();
+
+    private Task ModalDeleteAllArrayElements()
+    {
+        Tuple<int, string> result = treeDataService.DeleteAllArrayElements(Path);
+
+        if (result.Item1 != ResponseUtil.OK)
+        {
+            _errorMessage = result.Item2;
+            // reload modal but don't close it
+            StateHasChanged();
+            return Task.CompletedTask;
+        }
+
+        toastService.ShowInfo($"Removed all array elements at path: {Path}");
+
+        return OnClose.InvokeAsync();
+    }
+}

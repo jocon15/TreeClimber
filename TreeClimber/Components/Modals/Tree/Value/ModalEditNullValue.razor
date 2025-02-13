@@ -1,0 +1,74 @@
+﻿@inject TreeDataService treeDataService
+@inject IToastService toastService
+
+<div class="modal fade show" id="editModal" style="display:block; background-color: rgba(10,10,10,.8);" aria-modal="true" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header dark">
+                <h4 class="modal-title">Edit Null Value for: @Key </h4>
+                <button type="button" class="modal-close-btn" @onclick=@ModalCancel>&#10005;</button>
+            </div>
+            <div class="modal-body dark">
+                <h5 class="form-element-title">New Value: </h5>
+                <div>
+                    <input type="text" class="text-input short-box" @bind=@_inputValue />
+                </div>
+            </div>
+            <ConditionalModalErrorMessage ErrorMessage=@_errorMessage />
+            <div class="modal-footer dark">
+                <button type="button" class="add-btn" @onclick=@ModalOk>Update</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public string Path { get; set; }
+
+    [Parameter]
+    public string Key { get; set; }
+
+    [Parameter]
+    public NSTulipAPI ActiveAPI { get; set; }
+
+    [Parameter]
+    public EventCallback<bool> OnClose { get; set; }
+
+    private string _inputValue = "";
+
+    private string _errorMessage = "";
+
+    private Task ModalCancel() => OnClose.InvokeAsync(false);
+
+    private Task ModalOk()
+    {
+        // Null values are assumed to only appear when someone does not fill in the value of a top-level column
+        // when creating a record in Tulip using Tulip's web interface.
+        // Find the type of the data from the column. If no matching column is found, this means there is a null
+        // value deep in the JSON structure, in which case, simply overwrite it with a string value and.
+        string dataType = InputUtil.STRING;
+        foreach (TulipColumn column in ActiveAPI.Columns)
+        {
+            if (Key == column.GetDeAlias())
+            {
+                dataType = column.GetDataType();
+                break;
+            }
+        }
+
+        Tuple<int, string> result = treeDataService.EditNullValue(Path, _inputValue, dataType);
+
+        if (result.Item1 != ResponseUtil.OK)
+        {
+            _errorMessage = result.Item2;
+            // reload modal but don't close it
+            StateHasChanged();
+            return Task.CompletedTask;
+        }
+
+        toastService.ShowInfo($"Updated value at path: {Path}");
+
+        return OnClose.InvokeAsync(true);
+    }
+}

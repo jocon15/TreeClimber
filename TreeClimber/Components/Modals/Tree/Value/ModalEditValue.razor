@@ -1,0 +1,71 @@
+﻿@inject TreeDataService treeDataService
+@inject IToastService toastService
+
+<div class="modal fade show" id="editModal" style="display:block; background-color: rgba(10,10,10,.8);" aria-modal="true" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header dark">
+                <h4 class="modal-title">Edit Value for: @Key </h4>
+                <button type="button" class="modal-close-btn" @onclick=@ModalCancel>&#10005;</button>
+            </div>
+            <div class="modal-body dark">
+                <h5 class="form-element-title">New Value: </h5>
+                <div>
+                    <input type="text" class="text-input short-box" @bind=@_inputValue />
+                </div>
+                @if (Value.Type == JTokenType.Date)
+                {
+                    @*Provide example format to user*@
+                    <text><text class="hint">Example: 2022-01-02T15:04:05Z</text></text>
+                }
+            </div>
+            <ConditionalModalErrorMessage ErrorMessage=@_errorMessage />
+            <div class="modal-footer dark">
+                <button type="button" class="add-btn" @onclick=@ModalOk>Update</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public string Path { get; set; }
+
+    [Parameter]
+    public string Key { get; set; }
+
+    [Parameter]
+    public JValue Value { get; set; }
+
+    [Parameter]
+    public EventCallback<bool> OnClose { get; set; }
+
+    private string? _inputValue;
+
+    private string _errorMessage = "";
+
+    protected override void OnInitialized()
+    {
+        // set the new value to the existing value
+        _inputValue = (string)Value;
+    }
+
+    private Task ModalCancel() => OnClose.InvokeAsync(false);
+
+    private Task ModalOk()
+    {
+        Tuple<int, string> result = treeDataService.EditData(Path, _inputValue);
+
+        if (result.Item1 != ResponseUtil.OK)
+        {
+            _errorMessage = result.Item2;
+            // reload modal but don't close it
+            StateHasChanged();
+            return Task.CompletedTask;
+        }
+
+        toastService.ShowInfo($"Updated value at path: {Path}");
+
+        return OnClose.InvokeAsync(true);
+    }
+}

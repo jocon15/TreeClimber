@@ -1,0 +1,152 @@
+﻿@inject TreeDataService treeDataService
+@inject IToastService toastService
+
+<div class="modal fade show" id="addModal" style="display:block; background-color: rgba(10,10,10,.8);" aria-modal="true" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header dark">
+                <h4 class="modal-title">Add Array Element</h4>
+                <button type="button" class="modal-close-btn" @onclick=@ModalCancel>&#10005;</button>
+            </div>
+            <div class="modal-body dark">
+                @if(UseElementTemplate == true)
+                {
+                    @*Dropdown for option to use template or not*@
+                    <h5 class="form-element-title">Add Method Type: </h5>
+                    <select name="cars" class="combobox" @bind=@_insertFunction>
+                        <option value="@(RecordUtil.TEMPLATE)">Template</option>
+                        <option value="raw">Custom JSON</option>
+                    </select>
+
+                    <div class="element-spacer"/>
+
+                    if (_insertFunction == RecordUtil.TEMPLATE)
+                    {
+                        @*We have a template*@
+                        <h5 class="form-element-title">Copy From Index: </h5>
+                        <div>
+                            <input type="number" class="text-input short-box" @bind=@_templateIndex/>
+                        </div>
+
+                        @if(_arrayLength != 0)
+                        {
+                            <div class="element-spacer"/>
+
+                            <h5 class="form-element-title">Insert Into Index: </h5>
+                            <div>
+                                <input type="number" class="text-input short-box" @bind=@_insertIndex />
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        @*Custom json *@
+                        @if (_arrayLength != 0)
+                        {
+                            <h5 class="form-element-title">Insert Into Index: </h5>
+                            <div>
+                                <input type="number" class="text-input short-box" @bind=@_insertIndex />
+                            </div>
+
+                            <div class="element-spacer" />
+                        }
+
+                        <h5 class="form-element-title">Insert Custom JSON: </h5>
+                        <div>
+                            <input type="text" class="text-input short-box" @bind=@_customJSON />
+                        </div>   
+                    }
+                }
+                else
+                {
+                    @*No template to go off of - json text box*@
+                    @if (_arrayLength != 0)
+                    {
+                        <h5 class="form-element-title">Insert Into Index: </h5>
+                        <div>
+                            <input type="number" class="text-input short-box" @bind=@_insertIndex />
+                        </div>
+
+                        <div class="element-spacer" />
+                    }
+
+                    <h5 class="form-element-title">Insert Custom JSON: </h5>
+                    <div>
+                        <input type="text" class="text-input short-box" @bind=@_customJSON />
+                    </div>
+                }
+            </div>
+            <ConditionalModalErrorMessage ErrorMessage=@_errorMessage />
+            <div class="modal-footer dark">
+                <button type="button" class="add-btn" @onclick=@ModalAddElement>Add</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public string Path { get; set; }
+
+    [Parameter]
+    public bool UseElementTemplate { get; set; }
+
+    [Parameter]
+    public EventCallback OnClose { get; set; }
+
+    private int _arrayLength;
+
+    private int _templateIndex = 0;
+
+    private int _insertIndex = 0;
+
+    private string _customJSON = "";
+
+    private string _insertFunction = RecordUtil.TEMPLATE;
+
+    private string _errorMessage = "";
+
+    protected override void OnInitialized()
+    {
+        Tuple<int, string, JToken?> result = treeDataService.AccessData(Path);
+
+        _arrayLength = ((JArray)result.Item3).Count;
+    }
+
+    private Task ModalCancel() => OnClose.InvokeAsync();
+
+    private Task ModalAddElement()
+    {
+        Tuple<int, string> result;
+
+        if (UseElementTemplate)
+        {
+            if (_insertFunction == RecordUtil.TEMPLATE)
+            {
+                result = treeDataService.AddArrayElementWithTemplate(Path, _insertIndex, _templateIndex);
+            }
+            else
+            {
+                // user enters custom json - user selects custom JSON
+                result = treeDataService.InsertData(Path, _customJSON, _insertIndex);
+            }
+        }
+        else
+        {
+            // user enters custom json - no template to use (empty array) - default to custom JSON
+            result = treeDataService.InsertData(Path, _customJSON, _insertIndex);
+        }
+
+        if (result.Item1 != ResponseUtil.OK)
+        {
+            _errorMessage = result.Item2;
+            // reload modal but don't close it
+            StateHasChanged();
+            return Task.CompletedTask;
+        }
+
+        toastService.ShowInfo($"Added array element at path: {TreeDataService.BuildArrayPathWithIndex(Path, _insertIndex)}");
+
+        return OnClose.InvokeAsync();
+    }
+}

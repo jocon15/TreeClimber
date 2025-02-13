@@ -1,0 +1,69 @@
+﻿@inject TreeDataService treeDataService
+@inject IToastService toastService
+
+<div class="modal fade show" id="addModal" style="display:block; background-color: rgba(10,10,10,.8);" aria-modal="true" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header dark">
+                <h4 class="modal-title">Delete Object Element</h4>
+                <button type="button" class="modal-close-btn" @onclick=@ModalCancel>&#10005;</button>
+            </div>
+            <div class="modal-body dark">
+                <div>
+                    <h5 class="form-element-title">Element to Delete: </h5>
+                    <select class="combobox" @bind=@_keyToDelete>
+                        <option value=@_keyToDelete selected disabled hidden>@_keyToDelete</option>
+                        @foreach (string key in GetChildKeys())
+                        {
+                            <option>@key</option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <ConditionalModalErrorMessage ErrorMessage=@_errorMessage />
+            <div class="modal-footer dark">
+                <button type="button" class="remove-btn" @onclick=@ModalDeleteElement>Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public string Path { get; set; }
+
+    [Parameter]
+    public EventCallback OnClose { get; set; }
+
+    private string _keyToDelete;
+
+    private string _errorMessage = "";
+
+    private List<string> GetChildKeys()
+    {
+        Tuple<int, string, JToken?> result = treeDataService.AccessData(Path);
+
+        JObject jobj = (JObject)result.Item3;
+
+        return jobj.Properties().Select(p => p.Name).ToList();
+    }
+
+    private Task ModalCancel() => OnClose.InvokeAsync();
+
+    private Task ModalDeleteElement()
+    {
+        Tuple<int, string> result = treeDataService.DeleteObjectElement(Path, _keyToDelete);
+
+        if (result.Item1 != ResponseUtil.OK)
+        {
+            _errorMessage = result.Item2;
+            // reload modal but don't close it
+            StateHasChanged();
+            return Task.CompletedTask;
+        }
+
+        toastService.ShowInfo($"Removed element at path: {Path}.{_keyToDelete}");
+
+        return OnClose.InvokeAsync();
+    }
+}

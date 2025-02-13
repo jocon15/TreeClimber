@@ -1,0 +1,111 @@
+﻿@inject TreeDataService treeDataService
+@inject IToastService toastService
+
+<div class="modal fade show" id="addModal" style="display:block; background-color: rgba(10,10,10,.8);" aria-modal="true" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header dark">
+                <h4 class="modal-title">Add Object Element</h4>
+                <button type="button" class="modal-close-btn" @onclick=@ModalCancel>&#10005;</button>
+            </div>
+            <div class="modal-body dark">
+                @*Dropdown for option to input the key*@
+                <h5 class="form-element-title">Key: </h5>
+                <div>
+                    <input type="text" class="text-input short-box" @bind=@_keyToAdd />
+                </div>
+
+                @*Dropdown for option to input the value type*@
+                <h5 class="form-element-title title-top-spacing">Value Type: </h5>
+                <select class="combobox" @bind=@_valueType>
+                    <option value="@(InputUtil.STRING)">String</option>
+                    <option value="@(InputUtil.INTEGER)">Integer</option>
+                    <option value="@(InputUtil.FLOAT)">Float</option>
+                    <option value="@(InputUtil.BOOL)">Boolean</option>
+                    <option value="@(InputUtil.CUSTOM)">Custom JSON</option>
+                </select>
+
+                @*Dynamic input for acceptable types*@
+                @if (_valueType == InputUtil.STRING)
+                {
+                    <h5 class="form-element-title title-top-spacing">Enter String Value: </h5>
+                    <div>
+                        <input type="text" class="text-input short-box" @bind=@_inputValue />
+                    </div>
+                }
+                else if (_valueType == InputUtil.INTEGER)
+                {
+                    <h5 class="form-element-title title-top-spacing">Enter Integer Value: </h5>
+                    <div>
+                        <input type="number" class="text-input short-box" @bind=@_inputValue />
+                    </div>
+                }
+                else if (_valueType == InputUtil.FLOAT)
+                {
+                    <h5 class="form-element-title title-top-spacing">Enter Float Value: </h5>
+                    <div>
+                        <input type="number" class="text-input short-box" @bind=@_inputValue />
+                    </div>
+                }
+                else if (_valueType == InputUtil.BOOL)
+                {
+                    <h5 class="form-element-title title-top-spacing">Enter Boolean Value: </h5>
+                    <select name="bool" class="combobox" @bind=@_inputValue>
+                        <option value="True">True</option>
+                        <option value="False">False</option>
+                    </select>
+                }
+                else if (_valueType == InputUtil.CUSTOM)
+                {
+                    <h5 class="form-element-title title-top-spacing">Enter Custom JSON: </h5>
+                    <div>
+                        <input type="text" class="text-input short-box" @bind=@_inputValue />
+                    </div>
+                }
+                else
+                {
+                    @*User has not selected an input type yet, display nothing*@
+                }   
+            </div>
+            <ConditionalModalErrorMessage ErrorMessage=@_errorMessage />
+            <div class="modal-footer dark">
+                <button type="button" class="add-btn" @onclick=@ModalAddElement>Add</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public string Path { get; set; }
+
+    [Parameter]
+    public EventCallback OnClose { get; set; }
+
+    private string _keyToAdd = "";
+
+    private string _valueType = InputUtil.NOTSET;
+
+    private string _inputValue = "";
+
+    private string _errorMessage = "";
+
+    private Task ModalCancel() => OnClose.InvokeAsync();
+
+    private Task ModalAddElement()
+    {
+        Tuple<int, string> result = treeDataService.AddObjectElement(Path, _keyToAdd, _inputValue, _valueType);
+
+        if (result.Item1 != ResponseUtil.OK)
+        {
+            _errorMessage = result.Item2;
+            // reload modal but don't close it
+            StateHasChanged();
+            return Task.CompletedTask;
+        }
+
+        toastService.ShowInfo($"Added element at path: {Path}.{_keyToAdd}");
+
+        return OnClose.InvokeAsync();
+    }
+}
