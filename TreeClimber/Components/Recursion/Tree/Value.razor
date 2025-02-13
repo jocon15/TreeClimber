@@ -1,0 +1,96 @@
+﻿@switch (Jval.Type)
+	{
+		case JTokenType.Null:
+			<text><text class="json-value" @onclick=@OpenEditNullValueModal>null</text></text>
+			break;
+		case JTokenType.String:
+			if (Jval.Value.ToString().Equals(""))
+			{
+				<text><text class="json-value" @onclick=@OpenEditValueModal>&#8709;</text></text>
+			}
+			else
+			{
+				<text><text class="json-string-value" @onclick=@OpenEditValueModal>@Jval</text></text>
+			}
+			break;
+		case JTokenType.Integer:
+			<text><text class="json-integer-value" @onclick=@OpenEditValueModal>@Jval</text></text>
+			break;
+		case JTokenType.Float:
+			<text><text class="json-float-value" @onclick=@OpenEditValueModal>@Jval</text></text>
+			break;
+		case JTokenType.Boolean:
+			<text><text class="json-boolean-value" @onclick=@OpenEditValueModal>@Jval</text></text>
+			break;
+		case JTokenType.Date:
+			<text><text class="json-date-value" @onclick=@OpenEditValueModal>@Jval</text></text>
+			break;
+		default:
+			<text><text class="json-value" @onclick=@OpenEditValueModal>@Jval</text></text>
+			break;
+	}
+
+@if (_editNullValueModalOpen == true)
+{
+	<ModalEditNullValue Path=@Path Key=@Key ActiveAPI=@ActiveAPI OnClose=@OnEditNullValueModalClosed />
+}
+@if (_editValueModalOpen == true)
+{
+	<ModalEditValue Path=@Path Key=@Key Value=Jval OnClose=@OnEditValueModalClose/>
+}
+
+@code {
+	[Parameter]
+	public string Path { get; set; }
+
+	[Parameter]
+	public JValue Jval { get; set; }
+
+	[Parameter]
+	public string Key { get; set; }
+
+	[Parameter]
+	public NSTulipAPI ActiveAPI { get; set; }
+
+	[Parameter]
+	public EventCallback OnParentStateChange { get; set; }
+
+	// ========== Edit Null Value Modal =============
+	private bool _editNullValueModalOpen = false;
+
+	private void OpenEditNullValueModal()
+	{
+		if (NSPathService.IsPathTopLevel(Path) == true){
+			_editNullValueModalOpen = true;
+		}
+	}
+
+	private void OnEditNullValueModalClosed(bool accepted)
+	{
+		if (accepted == true)
+		{
+			OnParentStateChange.InvokeAsync();
+		}
+		_editNullValueModalOpen = false;
+	}
+	// ==========================================
+
+
+	// ========== Edit Value Modal =============
+	private bool _editValueModalOpen = false;
+
+	private void OpenEditValueModal()
+	{
+		_editValueModalOpen = true;	
+	}
+
+	private void OnEditValueModalClose(bool accepted)
+	{
+		if (accepted == true)
+		{
+			OnParentStateChange.InvokeAsync();
+		}
+		_editValueModalOpen = false;
+	}	
+	// ==========================================
+}

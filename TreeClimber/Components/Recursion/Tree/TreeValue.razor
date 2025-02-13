@@ -1,0 +1,20 @@
+﻿<li class="tree-li">
+    <ContextMenuTrigger WrapperTag="text" MenuId="JValueContextMenu" Data=@Path>
+        <text class="json-key">@Key: </text>
+    </ContextMenuTrigger>
+    <Value Path=@Path Jval=@Jval Key=@Key OnParentStateChange=@OnParentStateChange />
+</li>
+
+@code {
+    [Parameter]
+    public string Path { get; set; }
+
+    [Parameter]
+    public JValue Jval { get; set; }
+
+    [Parameter]
+    public string Key { get; set; }
+
+    [Parameter]
+    public EventCallback OnParentStateChange { get; set; }
+}

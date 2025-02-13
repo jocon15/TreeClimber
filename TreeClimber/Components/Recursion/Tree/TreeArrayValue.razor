@@ -1,0 +1,19 @@
+﻿<li class="tree-li">
+    <text><text class="json-key">@getIndex():  </text></text>
+    <Value Path=@Path Jval=@Jval Key=@getIndex() OnParentStateChange=@OnParentStateChange />
+</li>
+
+@code {
+    [Parameter]
+    public string Path { get; set; }
+
+    [Parameter]
+    public JValue Jval { get; set; }
+
+    [Parameter]
+    public EventCallback OnParentStateChange { get; set; }
+
+    public string getIndex() =>
+        // get index from path instead of needing to pass in an index [Parameter]
+        NSPathService.GetLastArrayIndex(Path);
+}

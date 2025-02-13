@@ -1,0 +1,78 @@
+﻿@inject TreeDataService jsonDataService
+
+@if (Array is not null)
+{
+    _index = 0;
+    if (Array.Count == 0)
+    {
+        <li class="tree-li">
+           @*Display empty array*@
+            []
+        </li>
+    }
+
+    foreach (var element in Array)
+    {
+        // add the index to path
+        AddToPath($"{NSPathService.PATH_ARRAY_INDEX_EMBLEM}{_index}");
+
+        @if (element.GetType() == typeof(JValue))
+        {
+            <li class="tree-li">
+                <TreeArrayValue Path=@Path Jval=(JValue)element OnParentStateChange=@OnParentStateChange />
+            </li>
+        }
+        else if (element.GetType() == typeof(JObject))
+        {
+            <li class="tree-li">
+                <details>
+                    @{
+                        int indexCopy = _index;
+                        <ContextMenuTrigger WrapperTag="summary" MenuId="JObjectContextMenu" Data=@Path>
+                            <text class="json-key">@indexCopy:  </text>
+                        </ContextMenuTrigger>
+                    }
+                    <ul class="tree-ul">
+                        <TreeObject Path=@Path Jobj=(JObject)element OnParentStateChange=@OnParentStateChange />
+                    </ul>
+                </details>
+            </li>
+        }
+        else
+        {
+            <li class="tree-li">
+                <details>
+                    @{
+                        int indexCopy = _index;
+                        <ContextMenuTrigger WrapperTag="summary" MenuId="JArrayContextMenu" Data=@Path>
+                            <text class="json-key">@indexCopy:  </text>
+                        </ContextMenuTrigger>
+                    }
+                    <ul class="tree-ul">
+                        <TreeArray Path=@Path Array=(JArray)element OnParentStateChange=@OnParentStateChange/>
+                    </ul>
+                </details>
+            </li>
+        }
+
+        _index++;
+        RemoveLastFromPath();
+    }
+}
+
+@code {
+    [Parameter]
+    public string Path { get; set; }
+
+    [Parameter]
+    public JArray Array { get; set; }
+
+    [Parameter]
+    public EventCallback OnParentStateChange { get; set; }
+
+    public int _index = 0;
+
+    private void AddToPath(string key) => Path = NSPathService.AddKeyToPath(Path, key);
+
+    private void RemoveLastFromPath() => Path = NSPathService.RemoveLastKeyFromPath(Path);
+}

@@ -1,0 +1,76 @@
+﻿@if(Jobj is not null){
+    @*This parent ul tag is necessary in preventing the unwanted left-most tree bar we saw that was a side effect of li tags outside of ul*@
+    <ul class="tree-parent-ul">
+    @{
+    List<string> childKeys = GetChildKeys();
+    @if (childKeys.Count() == 0)
+    {
+        <li class="tree-li">
+            @*Display empty object*@
+            {}
+        </li>
+    }
+
+    @foreach(string key in childKeys)
+    {
+        @*Only show non-hidden items*@
+        @if (key.Contains(TulipColumn.HIDDEN) == false)
+        {
+            // add the key to path
+            AddToPath(key);
+
+            @if (Jobj[key].GetType() == typeof(JValue))
+            {
+                <TreeValue Path=@Path Jval=(JValue)Jobj[key] Key=@key OnParentStateChange=@OnParentStateChange />
+            }
+            else if (Jobj[key].GetType() == typeof(JObject))
+            {
+                <li class="tree-li">
+                    <details>
+                        <ContextMenuTrigger WrapperTag="summary" MenuId="JObjectContextMenu" Data=@Path>
+                            <text class="json-key">@key:  </text>
+                         </ContextMenuTrigger>
+                        <ul class="tree-ul">
+                            <TreeObject Path=@Path Jobj=(JObject)Jobj[key] OnParentStateChange=@OnParentStateChange />
+                        </ul>
+                    </details>
+                </li>
+            }
+            else
+            {
+                <li class="tree-li">
+                    <details>
+                        <ContextMenuTrigger WrapperTag="summary" MenuId="JArrayContextMenu" Data=@Path>
+                            <text class="json-key">@key:  </text>
+                        </ContextMenuTrigger>
+                        <ul class="tree-ul">
+                            <TreeArray Path=@Path Array=(JArray)Jobj[key] OnParentStateChange=@OnParentStateChange />
+                        </ul>
+                    </details>
+                </li>
+            }
+
+            // remove the last key from path
+            RemoveLastFromPath();
+        }
+    }
+    }
+    </ul>
+}
+
+@code {
+    [Parameter]
+    public string Path { get; set; }
+
+    [Parameter]
+    public JObject Jobj { get; set; }
+
+    [Parameter]
+    public EventCallback OnParentStateChange { get; set; }
+
+    private List<string> GetChildKeys() => Jobj.Properties().Select(p => p.Name).ToList();
+
+    private void AddToPath(string key) => Path = NSPathService.AddKeyToPath(Path, key);
+
+    private void RemoveLastFromPath() => Path = NSPathService.RemoveLastKeyFromPath(Path);
+}
