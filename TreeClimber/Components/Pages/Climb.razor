@@ -1,14 +1,33 @@
 ﻿@page "/climb"
 @rendermode InteractiveServer
 
-@inject JSONDataService jsonDataService
+@inject JSONFileDataService jsonDataService
 
 <h3>Climb</h3>
 
-@if(jsonDataService.GetJObject() != null){
+@if(jsonDataService.GetFileContents() != null){
 	@* Show page logic here *@
+	<p>@jsonDataService.GetFileContents().ToString()</p>
+
+	@*FIXME: call the correct recursive component based on the type of the value at path , JObejct, JArray, or JValue*@
+	<div class="tree-container">
+		@if(jsonDataService.GetFileContents().GetType() == typeof(JValue)){
+			<TreeValue Path=@_path JVal=@((JValue)jsonDataService.GetFileContents()) OnParentStateChange=@ParentStateChange />
+		}
+		else if (jsonDataService.GetFileContents().GetType() == typeof(JObject)){
+			<TreeObject Path=@_path Jobj=@((JObject)jsonDataService.GetFileContents()) OnParentStateChange=@ParentStateChange />
+		}
+		else{
+			<TreeArray Path=@_path Array=@((JArray)jsonDataService.GetFileContents()) OnParentStateChange=@ParentStateChange />
+		}
+	</div>
 }
 
 @code {
 
+
+	protected string _path = "";
+
+
+	public void ParentStateChange() => StateHasChanged();
 }

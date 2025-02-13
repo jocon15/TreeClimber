@@ -1,9 +1,8 @@
 ﻿@page "/import"
 @rendermode InteractiveServer
 
-
 @inject IWebHostEnvironment Environment
-@inject JSONDataService jsonDataService
+@inject JSONFileDataService jsonDataService
 @inject NavigationManager navManager
 
 <h3>Import Your JSON File Here</h3>
@@ -38,7 +37,9 @@
     <p>Uploading...</p>
 }
 
-<button @onclick=@ImportFile>Import</button>
+@if(_file != null){
+    <button @onclick=@ImportFile>Import</button>
+}
 
 @code {
     private List<IBrowserFile> loadedFiles = [];
@@ -68,13 +69,10 @@
         isLoading = false;
     }
 
-    private async Task ImportFile(){
-
-        // convert the contents of a file to strings
-        JObject fileContents = await FileImporterService.ConvertFileContentsToJObjectAsync(_file);
-
+    private async Task ImportFile()
+    {
         // load the contents into the JDS
-        jsonDataService.SetData(fileContents);
+        jsonDataService.SetData(_file);
 
         // FIXME: navigate to treeView (assuming it has passed all checks)
         navManager.NavigateTo("/climb");
