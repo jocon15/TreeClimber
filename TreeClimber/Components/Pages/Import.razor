@@ -1,7 +1,82 @@
 ﻿@page "/import"
+@rendermode InteractiveServer
+
+
+@inject IWebHostEnvironment Environment
+@inject JSONDataService jsonDataService
+@inject NavigationManager navManager
 
 <h3>Import Your JSON File Here</h3>
 
-@code {
+<InputFile OnChange="LoadFiles" />
 
+
+
+<p>
+    <label>
+        Max file size:
+        <input type="number" @bind="maxFileSize" />
+    </label>
+</p>
+
+<p>
+    <label>
+        Max allowed files:
+        <input type="number" @bind="maxAllowedFiles" />
+    </label>
+</p>
+
+<p>
+    <label>
+        Upload up to @maxAllowedFiles of up to @maxFileSize bytes:
+        <InputFile OnChange="LoadFiles" />
+    </label>
+</p>
+
+@if (isLoading)
+{
+    <p>Uploading...</p>
+}
+
+<button @onclick=@ImportFile>Import</button>
+
+@code {
+    private List<IBrowserFile> loadedFiles = [];
+    private IBrowserFile? _file;
+    private long maxFileSize = 1024 * 15;
+    private int maxAllowedFiles = 1;
+    private bool isLoading;
+
+    private void LoadFiles(InputFileChangeEventArgs e)
+    {
+        isLoading = true;
+        loadedFiles.Clear();
+
+        foreach (var file in e.GetMultipleFiles(maxAllowedFiles))
+        {
+            try
+            {
+                _file = file;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("File: {FileName} Error: {Error}",
+                    file.Name, ex.Message);
+            }
+        }
+
+        isLoading = false;
+    }
+
+    private async Task ImportFile(){
+
+        // convert the contents of a file to strings
+        JObject fileContents = await FileImporterService.ConvertFileContentsToJObjectAsync(_file);
+
+        // load the contents into the JDS
+        jsonDataService.SetData(fileContents);
+
+        // FIXME: navigate to treeView (assuming it has passed all checks)
+        navManager.NavigateTo("/climb");
+    }
 }
