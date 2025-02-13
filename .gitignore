@@ -187,7 +187,10 @@ DocProject/Help/html
 
 # Click-Once directory
 publish/
-obj/
+TreeClimber/obj/
+TreeClimberCore/obj/
+TreeClimber/bin/
+TreeClimberCore/bin/
 
 # Publish Web Output
 *.[Pp]ublish.xml
