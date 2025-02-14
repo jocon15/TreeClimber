@@ -1,4 +1,4 @@
-﻿@inject TreeDataService treeDataService
+﻿@inject JSONFileDataService jsonFileDataService
 @inject IToastService toastService
 
 <div class="modal fade show" id="addModal" style="display:block; background-color: rgba(10,10,10,.8);" aria-modal="true" role="dialog">
@@ -39,7 +39,7 @@
 
     private Task ModalDeleteElement()
     {
-        Tuple<int, string> result = treeDataService.DeleteArrayElement(Path, _indexToDelete);
+        Tuple<int, string> result = jsonFileDataService.DeleteArrayElement(Path, _indexToDelete);
 
         if (result.Item1 != ResponseUtil.OK)
         {
@@ -49,7 +49,7 @@
             return Task.CompletedTask;
         }
 
-        toastService.ShowInfo($"Removed array element to path: {TreeDataService.BuildArrayPathWithIndex(Path, _indexToDelete)}");
+        toastService.ShowInfo($"Removed array element to path: {JSONFileDataService.BuildArrayPathWithIndex(Path, _indexToDelete)}");
 
         return OnClose.InvokeAsync();
     }

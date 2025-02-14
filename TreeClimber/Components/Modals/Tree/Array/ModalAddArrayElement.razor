@@ -1,4 +1,4 @@
-﻿@inject TreeDataService treeDataService
+﻿@inject JSONFileDataService jsonFileDataService
 @inject IToastService toastService
 
 <div class="modal fade show" id="addModal" style="display:block; background-color: rgba(10,10,10,.8);" aria-modal="true" role="dialog">
@@ -14,13 +14,13 @@
                     @*Dropdown for option to use template or not*@
                     <h5 class="form-element-title">Add Method Type: </h5>
                     <select name="cars" class="combobox" @bind=@_insertFunction>
-                        <option value="@(RecordUtil.TEMPLATE)">Template</option>
+                        <option value="@(JSONFileDataService.TEMPLATE)">Template</option>
                         <option value="raw">Custom JSON</option>
                     </select>
 
                     <div class="element-spacer"/>
 
-                    if (_insertFunction == RecordUtil.TEMPLATE)
+                    if (_insertFunction == JSONFileDataService.TEMPLATE)
                     {
                         @*We have a template*@
                         <h5 class="form-element-title">Copy From Index: </h5>
@@ -102,13 +102,13 @@
 
     private string _customJSON = "";
 
-    private string _insertFunction = RecordUtil.TEMPLATE;
+    private string _insertFunction = JSONFileDataService.TEMPLATE;
 
     private string _errorMessage = "";
 
     protected override void OnInitialized()
     {
-        Tuple<int, string, JToken?> result = treeDataService.AccessData(Path);
+        Tuple<int, string, JToken?> result = jsonFileDataService.AccessData(Path);
 
         _arrayLength = ((JArray)result.Item3).Count;
     }
@@ -121,20 +121,20 @@
 
         if (UseElementTemplate)
         {
-            if (_insertFunction == RecordUtil.TEMPLATE)
+            if (_insertFunction == JSONFileDataService.TEMPLATE)
             {
-                result = treeDataService.AddArrayElementWithTemplate(Path, _insertIndex, _templateIndex);
+                result = jsonFileDataService.AddArrayElementWithTemplate(Path, _insertIndex, _templateIndex);
             }
             else
             {
                 // user enters custom json - user selects custom JSON
-                result = treeDataService.InsertData(Path, _customJSON, _insertIndex);
+                result = jsonFileDataService.InsertData(Path, _customJSON, _insertIndex);
             }
         }
         else
         {
             // user enters custom json - no template to use (empty array) - default to custom JSON
-            result = treeDataService.InsertData(Path, _customJSON, _insertIndex);
+            result = jsonFileDataService.InsertData(Path, _customJSON, _insertIndex);
         }
 
         if (result.Item1 != ResponseUtil.OK)
@@ -145,7 +145,7 @@
             return Task.CompletedTask;
         }
 
-        toastService.ShowInfo($"Added array element at path: {TreeDataService.BuildArrayPathWithIndex(Path, _insertIndex)}");
+        toastService.ShowInfo($"Added array element at path: {JSONFileDataService.BuildArrayPathWithIndex(Path, _insertIndex)}");
 
         return OnClose.InvokeAsync();
     }

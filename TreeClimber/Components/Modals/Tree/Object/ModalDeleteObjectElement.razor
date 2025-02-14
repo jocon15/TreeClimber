@@ -1,4 +1,4 @@
-﻿@inject TreeDataService treeDataService
+﻿@inject JSONFileDataService jsonFileDataService
 @inject IToastService toastService
 
 <div class="modal fade show" id="addModal" style="display:block; background-color: rgba(10,10,10,.8);" aria-modal="true" role="dialog">
@@ -41,7 +41,7 @@
 
     private List<string> GetChildKeys()
     {
-        Tuple<int, string, JToken?> result = treeDataService.AccessData(Path);
+        Tuple<int, string, JToken?> result = jsonFileDataService.AccessData(Path);
 
         JObject jobj = (JObject)result.Item3;
 
@@ -52,7 +52,7 @@
 
     private Task ModalDeleteElement()
     {
-        Tuple<int, string> result = treeDataService.DeleteObjectElement(Path, _keyToDelete);
+        Tuple<int, string> result = jsonFileDataService.DeleteObjectElement(Path, _keyToDelete);
 
         if (result.Item1 != ResponseUtil.OK)
         {

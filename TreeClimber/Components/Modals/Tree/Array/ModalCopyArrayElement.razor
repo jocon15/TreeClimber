@@ -1,5 +1,5 @@
 ﻿@inject IJSRuntime JSRuntime
-@inject TreeDataService treeDataService
+@inject JSONFileDataService jsonFileDataService
 @inject IToastService toastService
 
 <div class="modal fade show" id="copyModal" style="display:block; background-color: rgba(10,10,10,.8);" aria-modal="true" role="dialog">
@@ -38,7 +38,7 @@
 
     private async Task ModalCopyElement()
     {
-        Tuple<int, string, JToken?> result = treeDataService.GetArrayElement(Path, _indexToCopy);
+        Tuple<int, string, JToken?> result = jsonFileDataService.GetArrayElement(Path, _indexToCopy);
 
         if (result.Item1 != ResponseUtil.OK)
         {
@@ -51,7 +51,7 @@
         // copy the json string to clipboard
         await CopyTextToClipboard(result.Item3.ToString());
 
-        toastService.ShowInfo($"Copied array element from path: {TreeDataService.BuildArrayPathWithIndex(Path, _indexToCopy)}");
+        toastService.ShowInfo($"Copied array element from path: {JSONFileDataService.BuildArrayPathWithIndex(Path, _indexToCopy)}");
 
         await OnClose.InvokeAsync();
     }

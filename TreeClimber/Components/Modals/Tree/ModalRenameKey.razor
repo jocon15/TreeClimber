@@ -1,4 +1,4 @@
-﻿@inject TreeDataService treeDataService
+﻿@inject JSONFileDataService jsonFileDataService
 @inject IToastService toastService
 
 <div class="modal fade show" id="notificationModal" style="display:block; background-color: rgba(10,10,10,.8);" aria-modal="true" role="dialog">
@@ -36,14 +36,14 @@
     protected override void OnInitialized()
     {
         // set the new value to the existing value
-        _inputValue = TreeDataService.GetParentPathAndLastKey(Path).Item2;
+        _inputValue = JSONFileDataService.GetParentPathAndLastKey(Path).Item2;
     }
 
     private Task ModalCancel() => OnClose.InvokeAsync();
 
     private Task ModalOk()
     {
-        Tuple<int, string> result = treeDataService.RenameKey(Path, _inputValue);
+        Tuple<int, string> result = jsonFileDataService.RenameKey(Path, _inputValue);
 
         if (result.Item1 != ResponseUtil.OK)
         {

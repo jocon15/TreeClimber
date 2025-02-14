@@ -1,4 +1,4 @@
-﻿@inject TreeDataService treeDataService
+﻿@inject JSONFileDataService jsonFileDataService
 @inject IToastService toastService
 
 <div class="modal fade show" id="addModal" style="display:block; background-color: rgba(10,10,10,.8);" aria-modal="true" role="dialog">
@@ -34,7 +34,7 @@
 
     private Task ModalDeleteAllArrayElements()
     {
-        Tuple<int, string> result = treeDataService.DeleteAllArrayElements(Path);
+        Tuple<int, string> result = jsonFileDataService.DeleteAllArrayElements(Path);
 
         if (result.Item1 != ResponseUtil.OK)
         {

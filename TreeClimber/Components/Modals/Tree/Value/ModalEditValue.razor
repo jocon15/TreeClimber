@@ -1,4 +1,4 @@
-﻿@inject TreeDataService treeDataService
+﻿@inject JSONFileDataService jsonFileDataService
 @inject IToastService toastService
 
 <div class="modal fade show" id="editModal" style="display:block; background-color: rgba(10,10,10,.8);" aria-modal="true" role="dialog">
@@ -54,7 +54,7 @@
 
     private Task ModalOk()
     {
-        Tuple<int, string> result = treeDataService.EditData(Path, _inputValue);
+        Tuple<int, string> result = jsonFileDataService.EditData(Path, _inputValue);
 
         if (result.Item1 != ResponseUtil.OK)
         {
