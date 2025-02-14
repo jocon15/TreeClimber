@@ -1,6 +1,6 @@
 ﻿using TreeClimberCore.Services.JSON;
 
-namespace TulipCore.Services.Path
+namespace TreeClimberCore.Services.Path
 {
 	/// <summary>
 	/// Path Service provides a set of static methods to help any classes, methods, pages...etc. that 
