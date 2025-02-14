@@ -1,0 +1,11 @@
+﻿@if (ErrorMessage != "")
+{
+	<div class="error-message-container">
+		<text><text class="red-text">@ErrorMessage</text></text>
+	</div>
+}
+
+@code {
+	[Parameter]
+	public string ErrorMessage { get; set; }
+}
