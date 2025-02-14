@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Mvc.ViewFeatures;
+@inject IFileVersionProvider FileVersionProvider
+
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -9,10 +12,17 @@
     <link rel="stylesheet" href="app.css" />
     <link rel="stylesheet" href="TreeClimber.styles.css" />
     <link rel="icon" type="image/png" href="favicon.png" />
+    @*Custom CSS Files*@
+    <link href="@AppendVersion("Buttons.css")" rel="stylesheet" />
+    <link href="@AppendVersion("Inputs.css")" rel="stylesheet" />
+    <link href="@AppendVersion("Modal.css")" rel="stylesheet" />
+    <link href="@AppendVersion("Tree.css")" rel="stylesheet" />
 
     @*Blazor context menu references*@
     <link href="_content/Blazor.ContextMenu/blazorContextMenu.min.css" rel="stylesheet" />
     <script src="_content/Blazor.ContextMenu/blazorContextMenu.min.js"></script>
+    @*Blazored Toast references*@
+    <link href="TreeClimber.styles.css" rel="stylesheet"/>
 
     <HeadOutlet />
 </head>
@@ -23,3 +33,17 @@
 </body>
 
 </html>
+
+@functions {
+    /* This is function acts as a chache-buster.
+        *
+        * The scoped (custom) css files that we define in wwwroot/css are cached by the browser as a part of normal operation.
+        * Since we began usage of OnParametersSetAsync() vs. OnInitialized(), we stopped using forceload:true because it was no
+        * longer needed. This was likely the reason that the browser was not reloading the css files.
+        *
+        * So, no changes to the scoped css files were reflected in the application because the browser used the old cached css file
+        * instead of loading the new one. With this function, the scoped css files are appended with a file version string to force the broswer
+        * to load and use the newest version of the file at runtime.
+        */
+    private string AppendVersion(string path) => FileVersionProvider.AddFileVersionToPath("/", path);
+}

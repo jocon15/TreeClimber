@@ -1,12 +1,16 @@
+using Blazored.Toast;
 using TreeClimber.Components;
 using TreeClimberCore.Services.JSON;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddMvc();  // need this for cache busting in App.razor
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 builder.Services.AddScoped<JSONFileDataService>();
+builder.Services.AddBlazorContextMenu();
+builder.Services.AddBlazoredToast();
 
 var app = builder.Build();
 
