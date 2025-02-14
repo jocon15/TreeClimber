@@ -32,7 +32,7 @@
 
 @if (_editNullValueModalOpen == true)
 {
-	<ModalEditNullValue Path=@Path Key=@Key ActiveAPI=@ActiveAPI OnClose=@OnEditNullValueModalClosed />
+	<ModalEditNullValue Path=@Path Key=@Key OnClose=@OnEditNullValueModalClosed />
 }
 @if (_editValueModalOpen == true)
 {
@@ -48,9 +48,6 @@
 
 	[Parameter]
 	public string Key { get; set; }
-
-	[Parameter]
-	public NSTulipAPI ActiveAPI { get; set; }
 
 	[Parameter]
 	public EventCallback OnParentStateChange { get; set; }
