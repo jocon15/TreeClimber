@@ -1,0 +1,71 @@
+﻿.expanded-modal {
+    max-width: 900px !important;
+}
+
+.dark {
+    background-color: #9fb0c4 !important;
+}
+
+.modal-title {
+    font-family: var(--application-font-family);
+}
+
+.spacer {
+    padding-bottom: 10px;
+}
+
+.element-spacer {
+    /*When logic is applied, we need to use spacer elements instead of using title-top-spacing*/
+    /*Performs the same function, just works better with logic*/
+    padding-bottom: 20px;
+}
+
+.inline {
+    display: flex;
+    flex-direction: row;
+}
+
+.red-text {
+    background-color: #9fb0c4 !important; /*fixes white background caused by double wrapped text tags for error message diaplsy*/
+    text-indent: 0 !important;
+    color: crimson;
+}
+
+.error-message-container {
+    background-color: #9fb0c4;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.bold-text {
+    font-weight: bold;
+}
+
+.status-light {
+    width: 22px;
+    height: 22px;
+    border-radius: 22px;
+    margin: 5px;
+    position: relative;
+    bottom: 4px;
+}
+
+.success {
+    background: #04ba5f;
+}
+
+.warning {
+    background: #dba64b;
+}
+
+.failure {
+    background: #d15254;
+}
+
+.creating {
+    background: #ffc642;
+}
+
+.no-color {
+    background: #bdbdbd;
+}

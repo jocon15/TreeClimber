@@ -1,0 +1,229 @@
+﻿:root {
+    --input-text-color: #323232;
+    --input-background-color: #f5f5fa;
+    --input-border-style: solid; /*overrides 2 color default to just 1 border color*/
+    --input-border-radius: 5px;
+    --input-width: 200px;
+    --input-height: 36px;
+    --input-box-shaddow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    --input-transition: 0.3s;
+    --input-margin-bottom: 10px;
+}
+
+.form-element-title {
+    font-family: var(--application-font-family);
+}
+
+.title-top-spacing {
+    margin-top: 20px;
+}
+
+.form-element-value {
+    color: white;
+    font-weight: bold;
+    font-family: var(--application-font-family);
+}
+
+.custom-checkbox {
+    width: 25px;
+    height: 25px;
+}
+
+.combobox {
+    color: var(--input-text-color);
+    font-family: var(--application-font-family);
+    cursor: pointer;
+    background: var(--input-background-color);
+    border-color: var(--input-background-color);
+    border-style: var(--input-border-style);
+    border-radius: var(--input-border-radius);
+    width: var(--input-width);
+    height: var(--input-height);
+    box-shadow: var(--input-box-shaddow);
+    transition: var(--input-transition);
+    margin-bottom: var(--input-margin-bottom);
+}
+
+/* should be use in conjunction with form-element-title, this just overrides*/
+.data-table-title {
+    display: inline-block; /*Allows add button to be inline while respecting margin/padding*/
+}
+
+.data-table-div {
+    width: 800px;
+    max-height: 400px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    text-align: center;
+    margin-left: 5px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-right: 10px;
+}
+
+/* should be used in conjunction with tulip-th and tulip-td, this just overrides*/
+.data-table-th, .data-table-td {
+    /*removes the borders to give the form input table a more implistic look*/
+    border-left: 0px solid #ddd;
+}
+
+.data-table-add-btn {
+    float: right;
+}
+
+.datepick {
+    color: var(--input-text-color);
+    font-family: var(--application-font-family);
+    background: var(--input-background-color);
+    border-color: var(--input-background-color);
+    border-style: var(--input-border-style);
+    width: var(--input-width);
+    height: var(--input-height);
+    border-radius: var(--input-border-radius);
+    box-shadow: var(--input-box-shaddow);
+    transition: var(--input-transition);
+    margin-bottom: var(--input-margin-bottom);
+}
+
+.datetimepick {
+    color: var(--input-text-color);
+    font-family: var(--application-font-family);
+    background: var(--input-background-color);
+    border-color: var(--input-background-color);
+    border-style: var(--input-border-style);
+    width: var(--input-width);
+    height: var(--input-height);
+    border-radius: var(--input-border-radius);
+    box-shadow: var(--input-box-shaddow);
+    transition: var(--input-transition);
+    margin-bottom: var(--input-margin-bottom);
+}
+
+.text-input {
+    color: var(--input-text-color);
+    font-family: var(--application-font-family);
+    background: var(--input-background-color);
+    border-color: var(--input-background-color);
+    border-style: var(--input-border-style);
+    border-radius: var(--input-border-radius);
+    box-shadow: var(--input-box-shaddow);
+    transition: var(--input-transition);
+    margin-bottom: var(--input-margin-bottom);
+}
+
+.read-only-input {
+    color: var(--input-text-color);
+    font-family: var(--application-font-family);
+    background: var(--input-background-color);
+    border-color: var(--input-background-color);
+    border-style: var(--input-border-style);
+    width: var(--input-width);
+    height: var(--input-height);
+    border-radius: var(--input-border-radius);
+    box-shadow: var(--input-box-shaddow);
+    transition: var(--input-transition);
+    margin-bottom: var(--input-margin-bottom);
+    resize: none;
+}
+
+.short-box {
+    width: 300px;
+    height: 36px;
+}
+
+.long-box {
+    width: 650px;
+    height: 36px;
+}
+
+.multiline-box {
+    width: 650px;
+    height: 108px;
+    resize: none;
+}
+
+.modal-input {
+    /*Overrides the size to fit inside a modal (as opposed to a page)*/
+    width: 400px !important;
+    resize: none;
+}
+
+/*
+invert 1.0 changes the color of the calendar icon of the datepick input
+to white
+*/
+/*input[type="date"]::-webkit-calendar-picker-indicator {
+		cursor: pointer;
+		border-radius: 4px;
+		margin-right: 2px;
+		opacity: 1.0;
+		filter: invert(1.0);
+}*/
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+    margin-bottom: 10px;
+}
+
+    .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+    .slider:before {
+        position: absolute;
+        content: "";
+        height: 26px;
+        width: 26px;
+        left: 4px;
+        bottom: 4px;
+        background-color: white;
+        -webkit-transition: .4s;
+        transition: .4s;
+    }
+
+input:checked + .slider {
+    background-color: #2196F3;
+}
+
+input:focus + .slider {
+    box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+    border-radius: 34px;
+}
+
+    .slider.round:before {
+        border-radius: 50%;
+    }
+
+.disabled {
+    font-size: 20px;
+    text-decoration: underline dotted;
+    text-align: center;
+    color: dimgrey;
+}

@@ -1,0 +1,137 @@
+﻿
+.tree-read-only-header {
+    background: #f74893;
+    padding: 10px;
+    height: 35px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    border-radius: 10px;
+    position: sticky;
+    top: 87px;
+    z-index: 999;
+}
+
+.tree-container {
+    padding-left: 18px;
+}
+
+.tree-read-only-text {
+    color: #fff;
+    font-size: 20px;
+    font-weight: bold;
+    font-family: var(--application-font-family);
+}
+
+.clickable {
+    cursor: pointer;
+    font-size: 20px;
+    margin: 5px
+}
+
+.tree-parent-ul {
+    /*Remove default ul indent*/
+    padding: 0;
+    list-style-type: none;
+}
+
+.tree-ul {
+    list-style: none;
+    line-height: 2em;
+}
+
+.tree-li {
+    list-style: none;
+    margin-bottom: 4px; /* Spacing between top level properties: Part 1: set your desired height here. See Part 2 in .tree-li::after*/
+}
+
+.tree-ul, .tree-li {
+    position: relative;
+}
+
+    .tree-li::before {
+        position: absolute;
+        left: -10px;
+        top: 0px;
+        border-left: 5px solid gray;
+        border-bottom: 5px solid gray;
+        content: "";
+        width: 8px;
+        height: 1em;
+    }
+
+    .tree-li::after {
+        position: absolute;
+        left: -10px;
+        bottom: -4px; /* Part 2: match the spaing in part 1 to the value here to connect the tree view bar*/
+        border-left: 5px solid gray;
+        content: "";
+        width: 8px;
+        height: 100%;
+    }
+
+    .tree-li:last-child::after {
+        display: none;
+    }
+
+/*
+https://getcssscan.com/css-buttons-examples
+*/
+.tree-view-edit-btn {
+    color: #fff;
+    position: relative;
+    background-color: #e8ebea;
+    border-color: #b8c2bf;
+    inline-size: min-content;
+    border-radius: 5px;
+    /*width: 40px;
+    height: 15px;*/
+}
+
+.invalid-search {
+    color: crimson;
+}
+
+.json-key {
+    font-weight: bold;
+}
+
+.json-value {
+    cursor: pointer;
+}
+
+.json-string-value {
+    cursor: pointer;
+    color: #378528;
+}
+
+.json-integer-value {
+    cursor: pointer;
+    color: #053b61;
+}
+
+.json-integer-noclick {
+    color: #fca63d;
+}
+
+.json-boolean-value {
+    cursor: pointer;
+    color: #843ebd;
+}
+
+.json-float-value {
+    cursor: pointer;
+    color: #053b61;
+}
+
+.json-date-value {
+    cursor: pointer;
+    color: #059af7;
+}
+
+.json-date-noclick {
+    color: #059af7;
+}
