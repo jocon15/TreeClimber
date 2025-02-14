@@ -2,34 +2,18 @@
 @rendermode InteractiveServer
 
 @inject IWebHostEnvironment Environment
-@inject JSONFileDataService jsonDataService
+@inject JSONFileDataService jsonFileDataService
 @inject NavigationManager navManager
 
 <h3>Import Your JSON File Here</h3>
 
-<InputFile OnChange="LoadFiles" />
-
-
-
 <p>
     <label>
-        Max file size:
-        <input type="number" @bind="maxFileSize" />
+        Upload up to @maxAllowedFiles of up to 250MB bytes:
     </label>
-</p>
-
-<p>
-    <label>
-        Max allowed files:
-        <input type="number" @bind="maxAllowedFiles" />
-    </label>
-</p>
-
-<p>
-    <label>
-        Upload up to @maxAllowedFiles of up to @maxFileSize bytes:
+    <div>
         <InputFile OnChange="LoadFiles" />
-    </label>
+    </div>
 </p>
 
 @if (isLoading)
@@ -37,14 +21,15 @@
     <p>Uploading...</p>
 }
 
-@if(_file != null){
+@if(_file != null)
+{
     <button @onclick=@ImportFile>Import</button>
 }
 
 @code {
     private List<IBrowserFile> loadedFiles = [];
     private IBrowserFile? _file;
-    private long maxFileSize = 1024 * 15;
+    private long maxFileSize = 1024 * 238; // 1024 bytes in a kibibyte, * 238 ~= 250MB
     private int maxAllowedFiles = 1;
     private bool isLoading;
 
@@ -72,7 +57,7 @@
     private async Task ImportFile()
     {
         // load the contents into the JDS
-        jsonDataService.SetData(_file);
+        jsonFileDataService.SetData(_file);
 
         // FIXME: navigate to treeView (assuming it has passed all checks)
         navManager.NavigateTo("/climb");

@@ -1,33 +1,218 @@
 ﻿@page "/climb"
 @rendermode InteractiveServer
 
-@inject JSONFileDataService jsonDataService
+@inject JSONFileDataService jsonFileDataService
+@inject IJSRuntime jsRuntime
+@inject IToastService toastService
 
 <h3>Climb</h3>
 
-@if(jsonDataService.GetFileContents() != null){
+@if(jsonFileDataService.GetFileContents() != null){
 	@* Show page logic here *@
-	<p>@jsonDataService.GetFileContents().ToString()</p>
 
-	@*FIXME: call the correct recursive component based on the type of the value at path , JObejct, JArray, or JValue*@
 	<div class="tree-container">
-		@if(jsonDataService.GetFileContents().GetType() == typeof(JValue)){
-			<TreeValue Path=@_path JVal=@((JValue)jsonDataService.GetFileContents()) OnParentStateChange=@ParentStateChange />
+		@if(jsonFileDataService.GetFileContents().GetType() == typeof(JValue)){
+			<TreeValue Path=@_path JVal=@((JValue)jsonFileDataService.GetFileContents()) OnParentStateChange=@ParentStateChange />
 		}
-		else if (jsonDataService.GetFileContents().GetType() == typeof(JObject)){
-			<TreeObject Path=@_path Jobj=@((JObject)jsonDataService.GetFileContents()) OnParentStateChange=@ParentStateChange />
+		else if (jsonFileDataService.GetFileContents().GetType() == typeof(JObject)){
+			<TreeObject Path=@_path Jobj=@((JObject)jsonFileDataService.GetFileContents()) OnParentStateChange=@ParentStateChange />
 		}
 		else{
-			<TreeArray Path=@_path Array=@((JArray)jsonDataService.GetFileContents()) OnParentStateChange=@ParentStateChange />
+			<TreeArray Path=@_path Array=@((JArray)jsonFileDataService.GetFileContents()) OnParentStateChange=@ParentStateChange />
 		}
 	</div>
+
+	<button @onclick=@ExportFile>Export</button>
 }
 
+@*Context Menus*@
+<TreeObjectContextMenu Add=@OpenAddObjectElementModal Copy=@OpenCopyObjectElementModal Rename=@OpenRenameKeyModal Delete=@OpenDeleteObjectElementModal />
+<TreeArrayContextMenu Add=@OpenAddArrayElementModal Copy=@OpenCopyArrayElementModal Rename=@OpenRenameKeyModal Delete=@OpenDeleteArrayElementModal DeleteAll=@OpenDeleteAllArrayElementsModal />
+<TreeValueContextMenu Rename=@OpenRenameKeyModal />
+
+@*Modals*@
+@if (_addObjectElementModalOpen == true)
+{
+    <ModalAddObjectElement Path=@_pathFromEventClickArgs OnClose=@OnAddObjectElementModalClose />
+}
+@if (_copyObjectElementModalOpen == true)
+{
+    <ModalCopyObjectElement Path=@_pathFromEventClickArgs OnClose=@OnCopyObjectElementModalClose />
+}
+@if (_deleteObjectElementModalOpen == true)
+{
+    <ModalDeleteObjectElement Path=@_pathFromEventClickArgs OnClose=@OnDeleteObjectElementModalClose />
+}
+@if (_addArrayElementModalOpen == true)
+{
+    // usetemplate if there is an existing array element to copy from
+    Tuple<int, string, JToken?> result = jsonFileDataService.AccessData(_pathFromEventClickArgs);
+    JArray array = (JArray)result.Item3;
+    bool useTemplate = (array.Count != 0) ? true : false;
+    <ModalAddArrayElement Path=@_pathFromEventClickArgs UseElementTemplate=@useTemplate OnClose=@OnAddArrayElementModalClose />
+}
+@if (_copyArrayElementModalOpen == true)
+{
+    <ModalCopyArrayElement Path=@_pathFromEventClickArgs OnClose=@OnCopyArrayElementModalClose />
+}
+@if (_deleteArrayElementModalOpen == true)
+{
+    <ModalDeleteArrayElement Path=@_pathFromEventClickArgs OnClose=@OnDeleteArrayElementModalClose />
+}
+@if (_deleteAllArrayElementsModalOpen == true)
+{
+    <ModalDeleteAllElements Path=@_pathFromEventClickArgs OnClose=@OnDeleteAllArrayElementsModalClose />
+}
+@if (_renameKeyModalOpen == true)
+{
+    <ModalRenameKey Path=@_pathFromEventClickArgs OnClose=@OnRenameKeyModalClose />
+}
+
+<script>
+	window.downloadFileFromStream = async (fileName, contentStreamReference) => {
+	const arrayBuffer = await contentStreamReference.arrayBuffer();
+	const blob = new Blob([arrayBuffer]);
+	const url = URL.createObjectURL(blob);
+	const anchorElement = document.createElement('a');
+	anchorElement.href = url;
+	anchorElement.download = fileName ?? '';
+	anchorElement.click();
+	anchorElement.remove();
+	URL.revokeObjectURL(url);
+	}
+</script>
+
 @code {
-
-
 	protected string _path = "";
 
+    private string? _pathFromEventClickArgs;
 
 	public void ParentStateChange() => StateHasChanged();
+
+	private async Task ExportFile()
+	{
+		var fileStream = jsonFileDataService.GetFileAsMemoryStream();
+		var fileName = jsonFileDataService.GetFileName();
+
+		using var streamRef = new DotNetStreamReference(stream: fileStream);
+
+		await jsRuntime.InvokeVoidAsync("downloadFileFromStream", fileName, streamRef);
+	}
+
+    // ======= Rename  Element Modal ======================
+    private bool _renameKeyModalOpen = false;
+
+    private void OpenRenameKeyModal(ItemClickEventArgs e)
+    {
+        // get the path from the passed data
+        _pathFromEventClickArgs = e.Data as string;
+
+        // open modal
+        _renameKeyModalOpen = true;
+    }
+
+    private void OnRenameKeyModalClose() => _renameKeyModalOpen = false;
+    // ====================================================
+
+    // ========== Add Object Element Modal ================
+    private bool _addObjectElementModalOpen = false;
+
+    private void OpenAddObjectElementModal(ItemClickEventArgs e)
+    {
+        // get the path from the passed data
+        _pathFromEventClickArgs = e.Data as string;
+        // when modal opened...
+        _addObjectElementModalOpen = true;
+    }
+
+    private void OnAddObjectElementModalClose() => _addObjectElementModalOpen = false;
+    // ====================================================
+
+    // ========== Copy Object Element Modal ===============
+    private bool _copyObjectElementModalOpen = false;
+
+    private void OpenCopyObjectElementModal(ItemClickEventArgs e)
+    {
+        // get the path from the passed data
+        _pathFromEventClickArgs = e.Data as string;
+        // when modal opened...
+        _copyObjectElementModalOpen = true;
+    }
+
+    private void OnCopyObjectElementModalClose() => _copyObjectElementModalOpen = false;
+    // ====================================================
+
+    // ========== Delete Object Element Modal =============
+    private bool _deleteObjectElementModalOpen = false;
+
+    private void OpenDeleteObjectElementModal(ItemClickEventArgs e)
+    {
+        // get the path from the passed data
+        _pathFromEventClickArgs = e.Data as string;
+        // when modal opened...
+        _deleteObjectElementModalOpen = true;
+    }
+
+    private void OnDeleteObjectElementModalClose() => _deleteObjectElementModalOpen = false;
+    // ====================================================
+
+    // ======= Add Array Element Modal ====================
+    private bool _addArrayElementModalOpen = false;
+
+    private void OpenAddArrayElementModal(ItemClickEventArgs e)
+    {
+        // get the path from the passed data
+        _pathFromEventClickArgs = e.Data as string;
+        // when modal opened...
+        _addArrayElementModalOpen = true;
+        StateHasChanged();
+    }
+
+    private void OnAddArrayElementModalClose() => _addArrayElementModalOpen = false;
+    // ====================================================
+
+    // ======= Copy Array Element Modal ===================
+    private bool _copyArrayElementModalOpen = false;
+
+    private void OpenCopyArrayElementModal(ItemClickEventArgs e)
+    {
+        // get the path from the passed data
+        _pathFromEventClickArgs = e.Data as string;
+        // when modal opened...
+        _copyArrayElementModalOpen = true;
+        StateHasChanged();
+    }
+
+    private void OnCopyArrayElementModalClose() => _copyArrayElementModalOpen = false;
+    // ====================================================
+
+    // ======= Delete Array Element Modal =================
+    private bool _deleteArrayElementModalOpen = false;
+
+    private void OpenDeleteArrayElementModal(ItemClickEventArgs e)
+    {
+        // get the path from the passed data
+        _pathFromEventClickArgs = e.Data as string;
+        // when modal opened...
+        _deleteArrayElementModalOpen = true;
+        StateHasChanged();
+    }
+
+    private void OnDeleteArrayElementModalClose() => _deleteArrayElementModalOpen = false;
+    // ====================================================
+
+    // ======= Delete Array Elements Modal =================
+    private bool _deleteAllArrayElementsModalOpen = false;
+
+    private void OpenDeleteAllArrayElementsModal(ItemClickEventArgs e)
+    {
+        // get the path from the passed data
+        _pathFromEventClickArgs = e.Data as string;
+        // when modal opened...
+        _deleteAllArrayElementsModalOpen = true;
+        StateHasChanged();
+    }
+
+    private void OnDeleteAllArrayElementsModalClose() => _deleteAllArrayElementsModalOpen = false;
+    // ====================================================
 }
