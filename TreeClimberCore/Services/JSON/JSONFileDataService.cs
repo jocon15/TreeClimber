@@ -13,11 +13,11 @@ namespace TreeClimberCore.Services.JSON
 
 		private static readonly List<string> _jsonSymbols = new List<string> { "[", "]", "{", "}", "\"" };
 
-		protected volatile IBrowserFile? _file;
+		protected IBrowserFile? _file;
 
-		protected volatile JToken? _fileContents;
+		protected JToken? _fileContents;
 
-		protected volatile int _changeCount = 0;
+		protected int _changeCount = 0;
 
 		/// <summary>
 		/// Mutator for the JSON data
