@@ -1,6 +1,4 @@
-﻿@rendermode InteractiveServer
-
-<div class="tree-container">
+﻿<div class="tree-container">
     @if (JSONToken.GetType() == typeof(JValue))
     {
         <TreeValue Path=@_path JVal=@((JValue)JSONToken) OnParentStateChange=@OnParentStateChange />
