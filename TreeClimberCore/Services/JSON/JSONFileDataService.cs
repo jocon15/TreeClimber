@@ -13,17 +13,17 @@ namespace TreeClimberCore.Services.JSON
 
 		private static readonly List<string> _jsonSymbols = new List<string> { "[", "]", "{", "}", "\"" };
 
-		protected IBrowserFile _file;
+		protected volatile IBrowserFile? _file;
 
-		protected JToken? _fileContents;
+		protected volatile JToken? _fileContents;
 
-		protected int _changeCount = 0;
+		protected volatile int _changeCount = 0;
 
 		/// <summary>
 		/// Mutator for the JSON data
 		/// </summary>
 		/// <param name="data"></param>
-		public async Task SetData(IBrowserFile file)
+		public async Task SetDataAsync(IBrowserFile file)
 		{
 			_changeCount = 0;
 			_file = file;
@@ -32,7 +32,10 @@ namespace TreeClimberCore.Services.JSON
 
 		public int GetChangeCount() => _changeCount;
 
-		public JToken? GetFileContents() => _fileContents;
+		public JToken? GetFileContents()
+		{
+			return _fileContents;
+		}			
 
 		public string GetFileName() => _file.Name;
 
