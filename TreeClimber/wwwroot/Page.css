@@ -1,0 +1,62 @@
+﻿/*I put the application variables haere, but they can be inserted in any css page under :root{} except site.css, which did not work for unknown reason */
+:root {
+    --application-font-family: Segoe UI;
+}
+
+body {
+    /*background-color: #1e1e1e;*/
+    background-color: #2e2e2e;
+}
+
+.normal-text{
+    font-family: var(--application-font-family);
+}
+
+.header-element{
+}
+
+.d-inline-block {
+    margin-right: 100px;
+}
+
+.hint-parent-div {
+    display: flex;
+    flex-flow: row wrap;
+    margin-bottom: 10px;
+}
+
+.hint {
+    color: #707070;
+    font-family: var(--application-font-family);
+}
+
+.centered{
+    text-align: center;
+}
+
+.spinner-parent{
+    padding: 225px; /*should be 1/2 the chart-card-div height*/
+    position: relative; /*Needed to make spinner percentages work*/
+}
+
+.spinner {
+    border: 16px solid silver;
+    border-top: 16px solid #337AB7;
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    animation: spin 700ms linear infinite;
+    top: 50%;
+    left: 47%;
+    position: absolute;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg)
+    }
+
+    100% {
+        transform: rotate(360deg)
+    }
+}

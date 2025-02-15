@@ -15,8 +15,19 @@
     z-index: 999;
 }
 
+.climb-header {
+    color: #fff;
+    background-color: #404040;
+    width: fit-content;
+    font-family: var(--application-font-family);
+    padding: 15px;
+    border-radius: 20px;
+}
+
 .tree-container {
-    padding-left: 18px;
+    padding-left: 44px;
+    border: 5px solid grey;
+    border-radius: 20px;
 }
 
 .tree-read-only-text {
@@ -39,11 +50,13 @@
 }
 
 .tree-ul {
+    color: grey;
     list-style: none;
     line-height: 2em;
 }
 
 .tree-li {
+    color: grey;
     list-style: none;
     margin-bottom: 4px; /* Spacing between top level properties: Part 1: set your desired height here. See Part 2 in .tree-li::after*/
 }
@@ -66,37 +79,22 @@
     .tree-li::after {
         position: absolute;
         left: -10px;
-        bottom: -4px; /* Part 2: match the spaing in part 1 to the value here to connect the tree view bar*/
+        bottom: -4px; /* Part 2: match the spacing in part 1 to the value here to connect the tree view bar*/
         border-left: 5px solid gray;
         content: "";
         width: 8px;
         height: 100%;
+        
     }
 
     .tree-li:last-child::after {
         display: none;
     }
 
-/*
-https://getcssscan.com/css-buttons-examples
-*/
-.tree-view-edit-btn {
-    color: #fff;
-    position: relative;
-    background-color: #e8ebea;
-    border-color: #b8c2bf;
-    inline-size: min-content;
-    border-radius: 5px;
-    /*width: 40px;
-    height: 15px;*/
-}
-
-.invalid-search {
-    color: crimson;
-}
-
 .json-key {
+    font-family: var(--application-font-family);
     font-weight: bold;
+    color: #fff;
 }
 
 .json-value {
@@ -105,16 +103,17 @@ https://getcssscan.com/css-buttons-examples
 
 .json-string-value {
     cursor: pointer;
-    color: #378528;
+    /*color: #378528;*/
+    color: #cf804f;
 }
 
 .json-integer-value {
     cursor: pointer;
-    color: #053b61;
+    color: #8bdcfe;
 }
 
 .json-integer-noclick {
-    color: #fca63d;
+    color: #8bdcfe;
 }
 
 .json-boolean-value {
@@ -124,7 +123,7 @@ https://getcssscan.com/css-buttons-examples
 
 .json-float-value {
     cursor: pointer;
-    color: #053b61;
+    color: #960dd1;
 }
 
 .json-date-value {
