@@ -10,13 +10,13 @@
             </div>
             <div class="modal-body dark">
                 @*Dropdown for option to input the key*@
-                <h5 class="form-element-title">Key: </h5>
+                <h5 class="modal-input-title">Key: </h5>
                 <div>
                     <input type="text" class="text-input short-box" @bind=@_keyToAdd />
                 </div>
 
                 @*Dropdown for option to input the value type*@
-                <h5 class="form-element-title title-top-spacing">Value Type: </h5>
+                <h5 class="modal-input-title title-top-spacing">Value Type: </h5>
                 <select class="combobox" @bind=@_valueType>
                     <option value="@(InputUtil.STRING)">String</option>
                     <option value="@(InputUtil.INTEGER)">Integer</option>
@@ -28,28 +28,28 @@
                 @*Dynamic input for acceptable types*@
                 @if (_valueType == InputUtil.STRING)
                 {
-                    <h5 class="form-element-title title-top-spacing">Enter String Value: </h5>
+                    <h5 class="modal-input-title title-top-spacing">Enter String Value: </h5>
                     <div>
                         <input type="text" class="text-input short-box" @bind=@_inputValue />
                     </div>
                 }
                 else if (_valueType == InputUtil.INTEGER)
                 {
-                    <h5 class="form-element-title title-top-spacing">Enter Integer Value: </h5>
+                    <h5 class="modal-input-title title-top-spacing">Enter Integer Value: </h5>
                     <div>
                         <input type="number" class="text-input short-box" @bind=@_inputValue />
                     </div>
                 }
                 else if (_valueType == InputUtil.FLOAT)
                 {
-                    <h5 class="form-element-title title-top-spacing">Enter Float Value: </h5>
+                    <h5 class="modal-input-title title-top-spacing">Enter Float Value: </h5>
                     <div>
                         <input type="number" class="text-input short-box" @bind=@_inputValue />
                     </div>
                 }
                 else if (_valueType == InputUtil.BOOL)
                 {
-                    <h5 class="form-element-title title-top-spacing">Enter Boolean Value: </h5>
+                    <h5 class="modal-input-title title-top-spacing">Enter Boolean Value: </h5>
                     <select name="bool" class="combobox" @bind=@_inputValue>
                         <option value="True">True</option>
                         <option value="False">False</option>
@@ -57,7 +57,7 @@
                 }
                 else if (_valueType == InputUtil.CUSTOM)
                 {
-                    <h5 class="form-element-title title-top-spacing">Enter Custom JSON: </h5>
+                    <h5 class="modal-input-title title-top-spacing">Enter Custom JSON: </h5>
                     <div>
                         <input type="text" class="text-input short-box" @bind=@_inputValue />
                     </div>

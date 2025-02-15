@@ -10,7 +10,7 @@
             </div>
             <div class="modal-body dark">
                 <div>
-                    <h5 class="form-element-title">Element to Delete: </h5>
+                    <h5 class="modal-input-title">Element to Delete: </h5>
                     <select class="combobox" @bind=@_keyToDelete>
                         <option value=@_keyToDelete selected disabled hidden>@_keyToDelete</option>
                         @foreach (string key in GetChildKeys())

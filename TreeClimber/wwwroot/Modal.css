@@ -1,12 +1,22 @@
-﻿.expanded-modal {
+﻿:root {
+    --modal-background-color: #3d3d3d;
+}
+
+.expanded-modal {
     max-width: 900px !important;
 }
 
 .dark {
-    background-color: #9fb0c4 !important;
+    background-color: var(--modal-background-color);
 }
 
 .modal-title {
+    color: #fff;
+    font-family: var(--application-font-family);
+}
+
+.modal-input-title {
+    color: #fff;
     font-family: var(--application-font-family);
 }
 
@@ -26,13 +36,13 @@
 }
 
 .red-text {
-    background-color: #9fb0c4 !important; /*fixes white background caused by double wrapped text tags for error message diaplsy*/
+    background-color: var(--modal-background-color) !important; /*fixes white background caused by double wrapped text tags for error message diaplsy*/
     text-indent: 0 !important;
     color: crimson;
 }
 
 .error-message-container {
-    background-color: #9fb0c4;
+    background-color: var(--modal-background-color);
     padding-left: 15px;
     padding-right: 15px;
 }
