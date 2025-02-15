@@ -16,11 +16,6 @@
     </div>
 </p>
 
-@if (isLoading)
-{
-    <text><text class="hint">Uploading...</text></text>
-}
-
 @if(_file != null && jsonFileDataService.GetFileContents() == null)
 {
     <Spinner />
@@ -40,7 +35,6 @@
 
     private async Task LoadFiles(InputFileChangeEventArgs e)
     {
-        isLoading = true;
         loadedFiles.Clear();
 
         foreach (var file in e.GetMultipleFiles(maxAllowedFiles))
@@ -67,8 +61,6 @@
         await jsonFileDataService.SetDataAsync(_file);
 
         // FIMXE: check for malformed files, invalid json, and file too large
-
-        isLoading = false;
     }
 
     private async Task EditFile()
