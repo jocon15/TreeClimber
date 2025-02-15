@@ -1,0 +1,28 @@
+﻿<div class="warning-banner" style="background-color: @(_color);">
+	<span>
+		&#9888;
+	</span>
+	@Message
+</div>
+
+@code {
+	[Parameter]
+	public string Message { get; set; }
+
+	[Parameter]
+	public int Level { get; set; } = 3;
+
+	private string _color = "";
+
+	protected override void OnInitialized()
+	{
+		if (Level == 3)
+		{
+			_color = "#ef5350";
+		}
+		else
+		{
+			_color = "#ef9a50";
+		}
+	}
+}

@@ -30,6 +30,16 @@ body {
     font-family: var(--application-font-family);
 }
 
+.warning-banner {
+    color: #fff;
+    font-family: var(--application-font-family);
+    margin-top: 10px;
+    padding: 10px;
+    margin-bottom: 5px;
+    text-align: center;
+    border-radius: 15px;
+}
+
 .centered{
     text-align: center;
 }

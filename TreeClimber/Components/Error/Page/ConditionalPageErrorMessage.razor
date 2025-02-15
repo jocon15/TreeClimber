@@ -1,0 +1,9 @@
+﻿@if (ErrorMessage != "")
+{
+	<PageErrorMessage Message=@ErrorMessage />
+}
+
+@code {
+	[Parameter]
+	public string ErrorMessage { get; set; }
+}
