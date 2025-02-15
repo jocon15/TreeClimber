@@ -1,0 +1,26 @@
+﻿@rendermode InteractiveServer
+
+<div class="tree-container">
+    @if (JSONToken.GetType() == typeof(JValue))
+    {
+        <TreeValue Path=@_path JVal=@((JValue)JSONToken) OnParentStateChange=@OnParentStateChange />
+    }
+    else if (JSONToken.GetType() == typeof(JObject))
+    {
+        <TreeObject Path=@_path Jobj=@((JObject)JSONToken) OnParentStateChange=@OnParentStateChange />
+    }
+    else
+    {
+        <TreeArray Path=@_path Array=@((JArray)JSONToken) OnParentStateChange=@OnParentStateChange />
+    }
+</div>
+
+@code {
+    [Parameter]
+    public JToken JSONToken { get; set; }
+
+    [Parameter]
+    public EventCallback OnParentStateChange { get; set; }
+
+    private string _path = "";
+}
