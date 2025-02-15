@@ -1,17 +1,78 @@
 ﻿@page "/"
-
 @rendermode InteractiveServer
+
+@inject IWebHostEnvironment Environment
+@inject JSONFileDataService jsonFileDataService
 @inject NavigationManager navManager
 
 <PageTitle>Home</PageTitle>
 
-<h1>Welcome to TreeClimber, the easy way to edit JSON in a tree view.</h1>
+<h3 class="climb-header">Import a JSON File</h3>
 
-<button @onclick=@NavigateToImport>Import JSON File</button>
+<p>
+    <text class="hint">250MB limit</text>
+    <div>
+        <InputFile OnChange="LoadFiles" class="form-control" accept=".json"/>
+    </div>
+</p>
 
-@code{
-	private void NavigateToImport()
-	{
-		navManager.NavigateTo("/import");
-	}
+@if (isLoading)
+{
+    <text><text class="hint">Uploading...</text></text>
+}
+
+@if(_file != null && jsonFileDataService.GetFileContents() == null)
+{
+    <Spinner />
+}
+
+@if (_file != null && jsonFileDataService.GetFileContents() != null)
+{
+    <button class="add-btn" @onclick=@EditFile><PencilIcon Color="#fff" /> Edit File</button>
+}
+
+@code {
+    private List<IBrowserFile> loadedFiles = [];
+    private IBrowserFile? _file;
+    private long maxFileSize = 1024 * 238; // 1024 bytes in a kibibyte, * 238 ~= 250MB
+    private int maxAllowedFiles = 1;
+    private bool isLoading;
+
+    private async Task LoadFiles(InputFileChangeEventArgs e)
+    {
+        isLoading = true;
+        loadedFiles.Clear();
+
+        foreach (var file in e.GetMultipleFiles(maxAllowedFiles))
+        {
+            try
+            {
+                if (file.Size < maxFileSize)
+                {
+                    _file = file;
+                }
+                else
+                {
+                    throw new ArgumentException("File too large!");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("File: {FileName} Error: {Error}",
+                    file.Name, ex.Message);
+            }
+        }
+
+        // load the contents into the JDS
+        await jsonFileDataService.SetDataAsync(_file);
+
+        // FIMXE: check for malformed files, invalid json, and file too large
+
+        isLoading = false;
+    }
+
+    private async Task EditFile()
+    {
+        navManager.NavigateTo("/climb");
+    }
 }

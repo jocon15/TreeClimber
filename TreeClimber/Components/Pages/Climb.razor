@@ -4,25 +4,42 @@
 @inject JSONFileDataService jsonFileDataService
 @inject IJSRuntime jsRuntime
 @inject IToastService toastService
+@inject NavigationManager navManager
 
-<h3>Climb</h3>
+<PageTitle>Tree Climb</PageTitle>
 
-@if(jsonFileDataService.GetFileContents() != null){
-	@* Show page logic here *@
+@if (jsonFileDataService.GetFileContents() != null)
+{
+    <h3 class="climb-header">@jsonFileDataService.GetFileName()</h3>
 
-	<div class="tree-container">
-		@if(jsonFileDataService.GetFileContents().GetType() == typeof(JValue)){
-			<TreeValue Path=@_path JVal=@((JValue)jsonFileDataService.GetFileContents()) OnParentStateChange=@ParentStateChange />
-		}
-		else if (jsonFileDataService.GetFileContents().GetType() == typeof(JObject)){
-			<TreeObject Path=@_path Jobj=@((JObject)jsonFileDataService.GetFileContents()) OnParentStateChange=@ParentStateChange />
-		}
-		else{
-			<TreeArray Path=@_path Array=@((JArray)jsonFileDataService.GetFileContents()) OnParentStateChange=@ParentStateChange />
-		}
-	</div>
+    <div class="tree-container">
+        @if (jsonFileDataService.GetFileContents().GetType() == typeof(JValue))
+        {
+            <TreeValue Path=@_path JVal=@((JValue)jsonFileDataService.GetFileContents()) OnParentStateChange=@ParentStateChange />
+        }
+        else if (jsonFileDataService.GetFileContents().GetType() == typeof(JObject))
+        {
+            <TreeObject Path=@_path Jobj=@((JObject)jsonFileDataService.GetFileContents()) OnParentStateChange=@ParentStateChange />
+        }
+        else
+        {
+            <TreeArray Path=@_path Array=@((JArray)jsonFileDataService.GetFileContents()) OnParentStateChange=@ParentStateChange />
+        }
+    </div>
 
-	<button @onclick=@ExportFile>Export</button>
+    <button class="add-btn" @onclick=@DownloadFile><DownloadIcon Color="#fff" /> Download File</button>
+}
+else
+{
+    <div>
+        <Spinner />
+    </div>
+    <div class="centered">
+        <text><text class="hint">Taking too long?</text></text>
+    </div>
+    <div class="centered">
+        <button class="secondary-btn" @onclick=@BackToUploadFile>Upload File</button>
+    </div>
 }
 
 @*Context Menus*@
@@ -69,35 +86,45 @@
 }
 
 <script>
-	window.downloadFileFromStream = async (fileName, contentStreamReference) => {
-	const arrayBuffer = await contentStreamReference.arrayBuffer();
-	const blob = new Blob([arrayBuffer]);
-	const url = URL.createObjectURL(blob);
-	const anchorElement = document.createElement('a');
-	anchorElement.href = url;
-	anchorElement.download = fileName ?? '';
-	anchorElement.click();
-	anchorElement.remove();
-	URL.revokeObjectURL(url);
-	}
+    window.downloadFileFromStream = async (fileName, contentStreamReference) => {
+    const arrayBuffer = await contentStreamReference.arrayBuffer();
+    const blob = new Blob([arrayBuffer]);
+    const url = URL.createObjectURL(blob);
+    const anchorElement = document.createElement('a');
+    anchorElement.href = url;
+    anchorElement.download = fileName ?? '';
+    anchorElement.click();
+    anchorElement.remove();
+    URL.revokeObjectURL(url);
+    }
 </script>
 
 @code {
-	protected string _path = "";
+    protected string _path = "";
 
     private string? _pathFromEventClickArgs;
 
-	public void ParentStateChange() => StateHasChanged();
+    protected override void OnInitialized()
+    {
+        Console.WriteLine($"On initialized, jfds contents = {jsonFileDataService.GetFileContents()}");
+    }
 
-	private async Task ExportFile()
-	{
-		var fileStream = jsonFileDataService.GetFileAsMemoryStream();
-		var fileName = jsonFileDataService.GetFileName();
+    public void ParentStateChange() => StateHasChanged();
 
-		using var streamRef = new DotNetStreamReference(stream: fileStream);
+    private async Task DownloadFile()
+    {
+        var fileStream = jsonFileDataService.GetFileAsMemoryStream();
+        var fileName = jsonFileDataService.GetFileName();
 
-		await jsRuntime.InvokeVoidAsync("downloadFileFromStream", fileName, streamRef);
-	}
+        using var streamRef = new DotNetStreamReference(stream: fileStream);
+
+        await jsRuntime.InvokeVoidAsync("downloadFileFromStream", fileName, streamRef);
+    }
+
+    private void BackToUploadFile()
+    {
+        navManager.NavigateTo("/");   
+    }
 
     // ======= Rename  Element Modal ======================
     private bool _renameKeyModalOpen = false;
