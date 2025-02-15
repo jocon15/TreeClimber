@@ -10,36 +10,19 @@
 
 @if (jsonFileDataService.GetFileContents() != null)
 {
-    <h3 class="climb-header">@jsonFileDataService.GetFileName()</h3>
+    <h3 class="climb-header">Edit File: @jsonFileDataService.GetFileName()</h3>
 
-    <div class="tree-container">
-        @if (jsonFileDataService.GetFileContents().GetType() == typeof(JValue))
-        {
-            <TreeValue Path=@_path JVal=@((JValue)jsonFileDataService.GetFileContents()) OnParentStateChange=@ParentStateChange />
-        }
-        else if (jsonFileDataService.GetFileContents().GetType() == typeof(JObject))
-        {
-            <TreeObject Path=@_path Jobj=@((JObject)jsonFileDataService.GetFileContents()) OnParentStateChange=@ParentStateChange />
-        }
-        else
-        {
-            <TreeArray Path=@_path Array=@((JArray)jsonFileDataService.GetFileContents()) OnParentStateChange=@ParentStateChange />
-        }
+    <TreeRecursion JSONToken=@jsonFileDataService.GetFileContents() OnParentStateChange=@ParentStateChange />
+
+    <ConditionalChangesMade ChangeCount=@jsonFileDataService.GetChangeCount() />
+
+    <div>
+        <button class="add-btn" @onclick=@DownloadFile><DownloadIcon Color="#fff" /> Download File</button>
     </div>
-
-    <button class="add-btn" @onclick=@DownloadFile><DownloadIcon Color="#fff" /> Download File</button>
 }
 else
 {
-    <div>
-        <Spinner />
-    </div>
-    <div class="centered">
-        <text><text class="hint">Taking too long?</text></text>
-    </div>
-    <div class="centered">
-        <button class="secondary-btn" @onclick=@BackToUploadFile>Upload File</button>
-    </div>
+    <TreeLoading />
 }
 
 @*Context Menus*@
@@ -114,11 +97,6 @@ else
         using var streamRef = new DotNetStreamReference(stream: fileStream);
 
         await jsRuntime.InvokeVoidAsync("downloadFileFromStream", fileName, streamRef);
-    }
-
-    private void BackToUploadFile()
-    {
-        navManager.NavigateTo("/");   
     }
 
     // ======= Rename  Element Modal ======================
