@@ -1,0 +1,24 @@
+﻿@if (ChangeCount == 1)
+{
+    <div class="changes-made-container">
+        <text><text class="hint">@ChangeCount @_singularMessage</text></text>
+    </div>
+}
+else if (ChangeCount > 1)
+{
+    <div class="changes-made-container">
+        <text><text class="hint">@ChangeCount @_pluralMessage</text></text>
+    </div>
+}
+
+@code {
+    /* reminder, blazor will not reload a child component unless it detects a change in the parameters being passed to the child component
+     * therefore, we must pass the change count in for this (child) component to be re-called when the change count changes
+     */
+    [Parameter]
+    public int ChangeCount { get; set; }
+
+    private string _singularMessage = "change made";
+
+    private string _pluralMessage = "changes made";
+}
