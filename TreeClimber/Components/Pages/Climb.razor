@@ -104,11 +104,6 @@ else
 
     private string? _pathFromEventClickArgs;
 
-    protected override void OnInitialized()
-    {
-        Console.WriteLine($"On initialized, jfds contents = {jsonFileDataService.GetFileContents()}");
-    }
-
     public void ParentStateChange() => StateHasChanged();
 
     private async Task DownloadFile()
