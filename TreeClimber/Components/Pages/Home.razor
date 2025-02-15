@@ -10,7 +10,7 @@
 <h3 class="climb-header">Import a JSON File</h3>
 
 <p>
-    <text class="hint">250MB limit</text>
+    <text class="hint">10MB limit</text>
     <div>
         <InputFile OnChange="LoadFiles" class="form-control" accept=".json"/>
     </div>
@@ -26,15 +26,23 @@
     <button class="add-btn" @onclick=@EditFile><PencilIcon Color="#fff" /> Edit File</button>
 }
 
+@if (_errorMessage != "")
+{
+    <ConditionalPageErrorMessage ErrorMessage=@_errorMessage />
+}
+
 @code {
     private List<IBrowserFile> loadedFiles = [];
     private IBrowserFile? _file;
-    private long maxFileSize = 1024 * 238; // 1024 bytes in a kibibyte, * 238 ~= 250MB
+    private long maxFileSize = 1024 * 10; // 1024 bytes in a kibibyte, * 238 ~= 250MB
     private int maxAllowedFiles = 1;
     private bool isLoading;
 
+    private string _errorMessage = "";
+
     private async Task LoadFiles(InputFileChangeEventArgs e)
     {
+        _errorMessage = "";
         loadedFiles.Clear();
 
         foreach (var file in e.GetMultipleFiles(maxAllowedFiles))
@@ -44,21 +52,19 @@
                 if (file.Size < maxFileSize)
                 {
                     _file = file;
+                    // load the contents into the JDS
+                    await jsonFileDataService.SetDataAsync(_file);
                 }
                 else
                 {
-                    throw new ArgumentException("File too large!");
+                    _errorMessage = "File too large!";
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine("File: {FileName} Error: {Error}",
-                    file.Name, ex.Message);
+                _errorMessage = $"Error: {ex.Message}";
             }
         }
-
-        // load the contents into the JDS
-        await jsonFileDataService.SetDataAsync(_file);
 
         // FIMXE: check for malformed files, invalid json, and file too large
     }
