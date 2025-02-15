@@ -1,0 +1,18 @@
+﻿@inject NavigationManager navManager
+
+<div>
+    <Spinner />
+</div>
+<div class="centered">
+    <text><text class="hint">Taking too long?</text></text>
+</div>
+<div class="centered">
+    <button class="secondary-btn" @onclick=@BackToUploadFile>Upload File</button>
+</div>
+
+@code {
+    private void BackToUploadFile()
+    {
+        navManager.NavigateTo("/");
+    }
+}
