@@ -15,19 +15,12 @@
     z-index: 999;
 }
 
-.climb-header {
-    color: #fff;
-    background-color: #404040;
-    width: fit-content;
-    font-family: var(--application-font-family);
-    padding: 15px;
-    border-radius: 20px;
-}
-
 .tree-container {
     padding-left: 44px;
     border: 5px solid grey;
     border-radius: 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 .tree-read-only-text {
