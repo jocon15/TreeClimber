@@ -7,7 +7,10 @@
 
 <PageTitle>Home</PageTitle>
 
-<h3 class="climb-header">Welcome to Tree Climber!</h3>
+<div class="inline-header-container">
+    <h3 class="home-header">Welcome to Tree Climber!</h3>
+    <text class="hint inline-hint">v@_version</text>
+</div>
 
 <p>
     <text class="hint">10MB limit</text>
@@ -32,6 +35,8 @@
 }
 
 @code {
+    private string _version = "0.1.0";
+
     private List<IBrowserFile> loadedFiles = [];
     private IBrowserFile? _file;
     private long maxFileSize = 1024 * 10; // 1024 bytes in a kibibyte, * 238 ~= 250MB

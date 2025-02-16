@@ -1,0 +1,20 @@
+﻿.inline-header-container{
+   display: flex;
+}
+
+.inline-hint {
+    display: grid;
+    align-items: end;
+    padding-bottom: 8px;
+    margin-left: 10px;
+}
+
+.home-header {
+    display: inline-block;
+    color: #fff;
+    background-color: #404040;
+    width: fit-content;
+    font-family: var(--application-font-family);
+    padding: 15px;
+    border-radius: 20px;
+}
