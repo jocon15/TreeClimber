@@ -13,9 +13,9 @@ namespace TreeClimberCore.Services.JSON
 
 		private static readonly List<string> _jsonSymbols = new List<string> { "[", "]", "{", "}", "\"" };
 
-		protected IBrowserFile? _file;
+		protected IBrowserFile? _file = null;
 
-		protected JToken? _fileContents;
+		protected JToken? _fileContents = null;
 
 		protected int _changeCount = 0;
 
