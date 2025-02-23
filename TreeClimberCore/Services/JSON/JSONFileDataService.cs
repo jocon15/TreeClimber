@@ -629,6 +629,16 @@ namespace TreeClimberCore.Services.JSON
 				return Tuple.Create(ResponseUtil.INTERNAL_ERROR, $"Path: {path} does not exist in the data!");
 			}
 
+			if (path == "")
+			{
+				// empty path implies root element - replace data service with empty array
+				_fileContents = new JArray();
+
+				_changeCount++;
+
+				return Tuple.Create(ResponseUtil.OK, "");
+			}
+
 			// build the newtonsoft keypath
 			string keyPath = BuildNewtonsoftKeyPath(path);
 			// select the JToken using path
