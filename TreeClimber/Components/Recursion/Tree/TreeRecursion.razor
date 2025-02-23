@@ -9,7 +9,10 @@
     }
     else
     {
-        <TreeArray Path=@_path Array=@((JArray)JSONToken) OnParentStateChange=@OnParentStateChange />
+        @*Tree array must be wrapped with ul tag if it is the root structure - otherwise there will be odd spacing*@
+        <ul class="tree-parent-ul">
+            <TreeArray Path=@_path Array=@((JArray)JSONToken) OnParentStateChange=@OnParentStateChange />
+        </ul>
     }
 </div>
 
