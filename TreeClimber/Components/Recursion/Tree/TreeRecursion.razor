@@ -1,19 +1,24 @@
 ﻿<div class="tree-container">
-    @if (JSONToken.GetType() == typeof(JValue))
-    {
-        <TreeValue Path=@_path JVal=@((JValue)JSONToken) OnParentStateChange=@OnParentStateChange />
-    }
-    else if (JSONToken.GetType() == typeof(JObject))
-    {
-        <TreeObject Path=@_path Jobj=@((JObject)JSONToken) OnParentStateChange=@OnParentStateChange />
-    }
-    else
-    {
-        @*Tree array must be wrapped with ul tag if it is the root structure - otherwise there will be odd spacing*@
-        <ul class="tree-parent-ul">
-            <TreeArray Path=@_path Array=@((JArray)JSONToken) OnParentStateChange=@OnParentStateChange />
-        </ul>
-    }
+    <ul class="tree-parent-ul">
+        <li class="tree-li">
+            <text class="json-key">Right click for root options</text>
+        </li>
+        @if (JSONToken.GetType() == typeof(JValue))
+        {
+            <TreeValue Path=@_path JVal=@((JValue)JSONToken) OnParentStateChange=@OnParentStateChange />
+        }
+        else if (JSONToken.GetType() == typeof(JObject))
+        {
+            <TreeObject Path=@_path Jobj=@((JObject)JSONToken) OnParentStateChange=@OnParentStateChange />
+        }
+        else
+        {
+            @*Tree array must be wrapped with ul tag if it is the root structure - otherwise there will be odd spacing*@
+            <ul class="tree-parent-ul">
+                <TreeArray Path=@_path Array=@((JArray)JSONToken) OnParentStateChange=@OnParentStateChange />
+            </ul>
+        }
+    </ul>
 </div>
 
 @code {
