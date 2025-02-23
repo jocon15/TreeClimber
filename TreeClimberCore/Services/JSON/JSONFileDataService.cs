@@ -809,6 +809,10 @@ namespace TreeClimberCore.Services.JSON
 
 		public static string BuildArrayPathWithIndex(string arrayPath, int index)
 		{
+			if (arrayPath == "")
+			{
+				return $"{NSPathService.PATH_ARRAY_INDEX_EMBLEM}{index}";
+			}
 			return $"{arrayPath}.{NSPathService.PATH_ARRAY_INDEX_EMBLEM}{index}";
 		}
 
