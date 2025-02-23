@@ -629,6 +629,16 @@ namespace TreeClimberCore.Services.JSON
 				return Tuple.Create(ResponseUtil.INTERNAL_ERROR, $"Path: {path} does not exist in the data!");
 			}
 
+			if (path == "")
+			{
+				// empty path implies root element - replace data service with empty array
+				_fileContents = new JArray();
+
+				_changeCount++;
+
+				return Tuple.Create(ResponseUtil.OK, "");
+			}
+
 			// build the newtonsoft keypath
 			string keyPath = BuildNewtonsoftKeyPath(path);
 			// select the JToken using path
@@ -799,6 +809,10 @@ namespace TreeClimberCore.Services.JSON
 
 		public static string BuildArrayPathWithIndex(string arrayPath, int index)
 		{
+			if (arrayPath == "")
+			{
+				return $"{NSPathService.PATH_ARRAY_INDEX_EMBLEM}{index}";
+			}
 			return $"{arrayPath}.{NSPathService.PATH_ARRAY_INDEX_EMBLEM}{index}";
 		}
 
@@ -809,11 +823,6 @@ namespace TreeClimberCore.Services.JSON
 		/// <returns>bool of valid path or not</returns>
 		protected bool ValidPath(string path)
 		{
-			if (path == "")
-			{
-				return false;
-			}
-
 			// key check
 			// https://stackoverflow.com/questions/33828942/set-json-attribute-by-path
 			try

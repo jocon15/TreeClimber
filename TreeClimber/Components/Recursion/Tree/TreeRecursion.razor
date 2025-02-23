@@ -1,16 +1,24 @@
 ﻿<div class="tree-container">
-    @if (JSONToken.GetType() == typeof(JValue))
-    {
-        <TreeValue Path=@_path JVal=@((JValue)JSONToken) OnParentStateChange=@OnParentStateChange />
-    }
-    else if (JSONToken.GetType() == typeof(JObject))
-    {
-        <TreeObject Path=@_path Jobj=@((JObject)JSONToken) OnParentStateChange=@OnParentStateChange />
-    }
-    else
-    {
-        <TreeArray Path=@_path Array=@((JArray)JSONToken) OnParentStateChange=@OnParentStateChange />
-    }
+    <ul class="tree-parent-ul">
+        <ContextMenuTrigger WrapperTag="li" CssClass="tree-li" MenuId=@_rootContextMenu Data=@_path>
+            <text class="json-key">Right click for root options</text>
+        </ContextMenuTrigger>
+
+        @if (JSONToken.GetType() == typeof(JValue))
+        {
+            <TreeValue Path=@_path JVal=@((JValue)JSONToken) OnParentStateChange=@OnParentStateChange />
+        }
+        else if (JSONToken.GetType() == typeof(JObject))
+        {
+            <TreeObject Path=@_path Jobj=@((JObject)JSONToken) OnParentStateChange=@OnParentStateChange />
+        }
+        else
+        {
+            @*Tree array must be wrapped with ul tag if it is the root structure - otherwise there will be odd spacing*@
+            @*In this case, the ul tag used prior to the root options does the job!*@
+            <TreeArray Path=@_path Array=@((JArray)JSONToken) OnParentStateChange=@OnParentStateChange />
+        }
+    </ul>
 </div>
 
 @code {
@@ -21,4 +29,18 @@
     public EventCallback OnParentStateChange { get; set; }
 
     private string _path = "";
+
+    private string _rootContextMenu;
+
+    protected override void OnInitialized()
+    {
+        if (JSONToken.GetType() == typeof(JObject))
+        {
+            _rootContextMenu = "JObjectContextMenu";
+        }
+        else if (JSONToken.GetType() == typeof(JArray))
+        {
+            _rootContextMenu = "JArrayContextMenu";
+        }
+    }
 }

@@ -55,6 +55,10 @@ else
 {
     <ModalCopyArrayElement Path=@_pathFromEventClickArgs OnClose=@OnCopyArrayElementModalClose />
 }
+@if (_renameKeyModalOpen == true)
+{
+    <ModalRenameKey Path=@_pathFromEventClickArgs OnClose=@OnRenameKeyModalClose />
+}
 @if (_deleteArrayElementModalOpen == true)
 {
     <ModalDeleteArrayElement Path=@_pathFromEventClickArgs OnClose=@OnDeleteArrayElementModalClose />
@@ -63,23 +67,30 @@ else
 {
     <ModalDeleteAllElements Path=@_pathFromEventClickArgs OnClose=@OnDeleteAllArrayElementsModalClose />
 }
-@if (_renameKeyModalOpen == true)
-{
-    <ModalRenameKey Path=@_pathFromEventClickArgs OnClose=@OnRenameKeyModalClose />
-}
 
 <script>
     window.downloadFileFromStream = async (fileName, contentStreamReference) => {
-    const arrayBuffer = await contentStreamReference.arrayBuffer();
-    const blob = new Blob([arrayBuffer]);
-    const url = URL.createObjectURL(blob);
-    const anchorElement = document.createElement('a');
-    anchorElement.href = url;
-    anchorElement.download = fileName ?? '';
-    anchorElement.click();
-    anchorElement.remove();
-    URL.revokeObjectURL(url);
+        const arrayBuffer = await contentStreamReference.arrayBuffer();
+        const blob = new Blob([arrayBuffer]);
+        const url = URL.createObjectURL(blob);
+        const anchorElement = document.createElement('a');
+        anchorElement.href = url;
+        anchorElement.download = fileName ?? '';
+        anchorElement.click();
+        anchorElement.remove();
+        URL.revokeObjectURL(url);
     }
+
+        window.clipboardCopy = {
+        copyText: function (text) {
+            navigator.clipboard.writeText(text).then(function () {
+                // alert("Copied to clipboard!");
+            })
+                .catch(function (error) {
+                    alert(error);
+                });
+        }
+    };
 </script>
 
 @code {
