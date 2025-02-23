@@ -1,8 +1,9 @@
 ﻿<div class="tree-container">
     <ul class="tree-parent-ul">
-        <li class="tree-li">
+        <ContextMenuTrigger WrapperTag="li" CssClass="tree-li" MenuId=@_rootContextMenu Data=@_path>
             <text class="json-key">Right click for root options</text>
-        </li>
+        </ContextMenuTrigger>
+
         @if (JSONToken.GetType() == typeof(JValue))
         {
             <TreeValue Path=@_path JVal=@((JValue)JSONToken) OnParentStateChange=@OnParentStateChange />
@@ -28,4 +29,18 @@
     public EventCallback OnParentStateChange { get; set; }
 
     private string _path = "";
+
+    private string _rootContextMenu;
+
+    protected override void OnInitialized()
+    {
+        if (JSONToken.GetType() == typeof(JObject))
+        {
+            _rootContextMenu = "JObjectContextMenu";
+        }
+        else if (JSONToken.GetType() == typeof(JArray))
+        {
+            _rootContextMenu = "JArrayContextMenu";
+        }
+    }
 }
