@@ -809,11 +809,6 @@ namespace TreeClimberCore.Services.JSON
 		/// <returns>bool of valid path or not</returns>
 		protected bool ValidPath(string path)
 		{
-			if (path == "")
-			{
-				return false;
-			}
-
 			// key check
 			// https://stackoverflow.com/questions/33828942/set-json-attribute-by-path
 			try
