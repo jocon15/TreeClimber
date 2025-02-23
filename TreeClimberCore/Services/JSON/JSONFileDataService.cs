@@ -101,7 +101,8 @@ namespace TreeClimberCore.Services.JSON
 			}
 
 			string keyPath = BuildNewtonsoftKeyPath(path);
-			return Tuple.Create(ResponseUtil.OK, "", _fileContents.SelectToken(keyPath));
+			// JToken.Parse(X.ToString()) ensures a value is returned and not a reference (reference is bad)
+			return Tuple.Create(ResponseUtil.OK, "", JToken.Parse(_fileContents.SelectToken(keyPath).ToString()));
 		}
 
 		/// <summary>
