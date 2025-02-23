@@ -55,6 +55,10 @@ else
 {
     <ModalCopyArrayElement Path=@_pathFromEventClickArgs OnClose=@OnCopyArrayElementModalClose />
 }
+@if (_renameKeyModalOpen == true)
+{
+    <ModalRenameKey Path=@_pathFromEventClickArgs OnClose=@OnRenameKeyModalClose />
+}
 @if (_deleteArrayElementModalOpen == true)
 {
     <ModalDeleteArrayElement Path=@_pathFromEventClickArgs OnClose=@OnDeleteArrayElementModalClose />
@@ -62,10 +66,6 @@ else
 @if (_deleteAllArrayElementsModalOpen == true)
 {
     <ModalDeleteAllElements Path=@_pathFromEventClickArgs OnClose=@OnDeleteAllArrayElementsModalClose />
-}
-@if (_renameKeyModalOpen == true)
-{
-    <ModalRenameKey Path=@_pathFromEventClickArgs OnClose=@OnRenameKeyModalClose />
 }
 
 <script>
