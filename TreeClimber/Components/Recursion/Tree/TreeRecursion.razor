@@ -14,9 +14,8 @@
         else
         {
             @*Tree array must be wrapped with ul tag if it is the root structure - otherwise there will be odd spacing*@
-            <ul class="tree-parent-ul">
-                <TreeArray Path=@_path Array=@((JArray)JSONToken) OnParentStateChange=@OnParentStateChange />
-            </ul>
+            @*In this case, the ul tag used prior to the root options does the job!*@
+            <TreeArray Path=@_path Array=@((JArray)JSONToken) OnParentStateChange=@OnParentStateChange />
         }
     </ul>
 </div>
