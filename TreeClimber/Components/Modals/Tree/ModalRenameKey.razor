@@ -35,8 +35,17 @@
 
     protected override void OnInitialized()
     {
-        // set the new value to the existing value
-        _inputValue = JSONFileDataService.GetParentPathAndLastKey(Path).Item2;
+        if (Path == "")
+        {
+            // cannot rename root key because it does not have a key- show toast and close modal
+            toastService.ShowInfo("No root to rename!");
+            OnClose.InvokeAsync();
+        }
+        else
+        {
+            // set the new value to the existing value
+            _inputValue = JSONFileDataService.GetParentPathAndLastKey(Path).Item2;
+        }   
     }
 
     private Task ModalCancel() => OnClose.InvokeAsync();
