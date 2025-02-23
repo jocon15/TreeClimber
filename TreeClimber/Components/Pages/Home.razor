@@ -15,7 +15,7 @@
 <p>
     <text class="hint">10MB limit</text>
     <div>
-        <InputFile OnChange="LoadFiles" class="form-control" accept=".json"/>
+        <InputFile OnChange="LoadFile" class="form-control" accept=".json"/>
     </div>
 </p>
 
@@ -37,41 +37,41 @@
 @code {
     private string _version = "0.1.0";
 
-    private List<IBrowserFile> loadedFiles = [];
     private IBrowserFile? _file;
-    private long maxFileSize = 1024 * 10; // 1024 bytes in a kibibyte, * 238 ~= 250MB
-    private int maxAllowedFiles = 1;
-    private bool isLoading;
 
     private string _errorMessage = "";
 
-    private async Task LoadFiles(InputFileChangeEventArgs e)
-    {
-        _errorMessage = "";
-        loadedFiles.Clear();
+    private const long MAX_FILE_SIZE = 512000; // ~500KB
 
-        foreach (var file in e.GetMultipleFiles(maxAllowedFiles))
+    private const int MAX_ALLOWED_FILES = 1;
+
+    private async Task LoadFile(InputFileChangeEventArgs e)
+    {
+        List<IBrowserFile> loadedFiles = [];
+
+        foreach (var file in e.GetMultipleFiles(MAX_ALLOWED_FILES))
         {
             try
             {
-                if (file.Size < maxFileSize)
+                if (file.Size < MAX_FILE_SIZE)
                 {
                     _file = file;
-                    // load the contents into the JDS
                     await jsonFileDataService.SetDataAsync(_file);
                 }
                 else
                 {
-                    _errorMessage = "File Too Large!";
+                    _errorMessage = $"File Too Large! {MAX_FILE_SIZE} byte limit.";
                 }
+            }
+            catch (Newtonsoft.Json.JsonReaderException)
+            {
+                _errorMessage = "File does not contain valid JSON!";
             }
             catch (Exception ex)
             {
                 _errorMessage = $"Error: {ex.Message}";
             }
         }
-
-        // FIMXE: check for malformed files, invalid json, and file too large
     }
 
     private async Task EditFile()
