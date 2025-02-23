@@ -13,18 +13,18 @@
 </div>
 
 <p>
-    <text class="hint">10MB limit</text>
+    <text class="hint">500KB limit</text>
     <div>
         <InputFile OnChange="LoadFile" class="form-control" accept=".json"/>
     </div>
 </p>
 
-@if(_file != null && jsonFileDataService.GetFileContents() == null)
+@if (jsonFileDataService.GetFileContents() != null && jsonFileDataService.GetFileContents() == null)
 {
     <Spinner />
 }
 
-@if (_file != null && jsonFileDataService.GetFileContents() != null)
+@if (jsonFileDataService.GetFileContents() != null && jsonFileDataService.GetFileContents() != null)
 {
     <button class="add-btn" @onclick=@EditFile><PencilIcon Color="#fff" /> Edit File</button>
 }
@@ -36,8 +36,6 @@
 
 @code {
     private string _version = "0.1.0";
-
-    private IBrowserFile? _file;
 
     private string _errorMessage = "";
 
@@ -53,15 +51,7 @@
         {
             try
             {
-                if (file.Size < MAX_FILE_SIZE)
-                {
-                    _file = file;
-                    await jsonFileDataService.SetDataAsync(_file);
-                }
-                else
-                {
-                    _errorMessage = $"File Too Large! {MAX_FILE_SIZE} byte limit.";
-                }
+                await jsonFileDataService.SetDataAsync(file);
             }
             catch (Newtonsoft.Json.JsonReaderException)
             {
@@ -69,12 +59,12 @@
             }
             catch (Exception ex)
             {
-                _errorMessage = $"Error: {ex.Message}";
+                _errorMessage = ex.Message;
             }
         }
     }
 
-    private async Task EditFile()
+    private void EditFile()
     {
         navManager.NavigateTo("/climb");
     }
