@@ -39,16 +39,6 @@ namespace TreeClimberCore.Services.JSON
 
 		public string GetFileName() => _file.Name;
 
-		public IBrowserFile GetFile()
-		{
-			// suggested file size limit for memory stream is < 250MB
-			// FIXME: https://stackoverflow.com/questions/52748183/serialize-into-json-and-return-as-a-stream
-			// use this to convert JObject to memory stream
-			// FIXME: https://learn.microsoft.com/en-us/aspnet/core/blazor/file-downloads?view=aspnetcore-9.0
-			// use this to download a file from a memory stream
-			throw new NotImplementedException();
-		}
-
 		public MemoryStream GetFileAsMemoryStream()
 		{
 			var stream = new MemoryStream();
