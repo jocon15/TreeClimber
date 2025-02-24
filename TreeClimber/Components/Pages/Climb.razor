@@ -101,9 +101,9 @@ else
 
     public void ParentStateChange() => StateHasChanged();
 
-    private async Task UndoChanges()
+    private void UndoChanges()
     {
-        await jsonFileDataService.UndoAllChanges();
+        jsonFileDataService.UndoAllChanges();
     }
 
     private async Task DownloadFile()

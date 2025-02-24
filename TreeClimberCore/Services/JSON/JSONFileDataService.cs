@@ -17,6 +17,8 @@ namespace TreeClimberCore.Services.JSON
 
 		protected JToken? _fileContents = null;
 
+		protected JToken? _initialContents = null;
+
 		protected int _changeCount = 0;
 
 		/// <summary>
@@ -28,6 +30,7 @@ namespace TreeClimberCore.Services.JSON
 			_changeCount = 0;
 			_file = file;
 			_fileContents = await ConvertFileContentsToJObjectAsync(file);
+			_initialContents = JToken.Parse(_fileContents.ToString());  // cannot simply set it to _fileContents because in C# it will create a reference
 		}
 
 		public int GetChangeCount() => _changeCount;
@@ -39,12 +42,12 @@ namespace TreeClimberCore.Services.JSON
 
 		public string GetFileName() => _file.Name;
 
-		public async Task UndoAllChanges()
+		public void UndoAllChanges()
 		{
-			if (_file != null)
+			if (_fileContents != null && _initialContents != null)
 			{
 				_changeCount = 0;
-				_fileContents = await ConvertFileContentsToJObjectAsync(_file);
+				_fileContents = _initialContents;
 			}
 		}
 
