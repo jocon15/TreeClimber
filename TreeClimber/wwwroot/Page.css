@@ -9,6 +9,7 @@ body {
 }
 
 .normal-text{
+    color: #fff;
     font-family: var(--application-font-family);
 }
 
