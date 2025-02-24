@@ -1,5 +1,4 @@
-﻿/*I put the application variables haere, but they can be inserted in any css page under :root{} except site.css, which did not work for unknown reason */
-:root {
+﻿:root {
     --application-font-family: Segoe UI;
 }
 
