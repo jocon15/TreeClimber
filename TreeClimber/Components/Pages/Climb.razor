@@ -16,7 +16,7 @@
 
     <ConditionalChangesMade ChangeCount=@jsonFileDataService.GetChangeCount() />
 
-    <div>
+    <div class="climb-button-container">
         <button class="secondary-btn" @onclick=@UndoChanges>&#8634; Undo All Changes</button>
         <button class="add-btn" @onclick=@DownloadFile><DownloadIcon Color="#fff" /> Download File</button>
     </div>

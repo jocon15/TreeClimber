@@ -13,7 +13,7 @@
 </div>
 
 <p>
-    <text class="hint">500KB limit</text>
+    <text class="hint">10KB limit</text>
     <div>
         <InputFile OnChange="LoadFile" class="form-control" accept=".json"/>
     </div>
@@ -24,7 +24,7 @@
     <Spinner />
 }
 
-@if (jsonFileDataService.GetFileContents() != null && jsonFileDataService.GetFileContents() != null)
+@if (jsonFileDataService.GetFileContents() != null && jsonFileDataService.GetFileContents() != null && _errorMessage == "")
 {
     <button class="add-btn" @onclick=@EditFile><PencilIcon Color="#fff" /> Edit File</button>
 }
@@ -39,16 +39,24 @@
 
     private string _errorMessage = "";
 
-    private const long MAX_FILE_SIZE = 512000; // ~500KB
+    private const long MAX_FILE_SIZE = 10000; // ~500KB
 
     private const int MAX_ALLOWED_FILES = 1;
 
     private async Task LoadFile(InputFileChangeEventArgs e)
     {
+        // clear any existing error messages
+        _errorMessage = "";
+
         List<IBrowserFile> loadedFiles = [];
 
         foreach (var file in e.GetMultipleFiles(MAX_ALLOWED_FILES))
         {
+            if (file.Size > MAX_FILE_SIZE)
+            {
+                _errorMessage = $"File is over {BytesToKiloBytes(MAX_FILE_SIZE)}KB limit!";
+            }
+
             try
             {
                 await jsonFileDataService.SetDataAsync(file);
@@ -68,4 +76,6 @@
     {
         navManager.NavigateTo("/climb");
     }
+
+    private long BytesToKiloBytes(long bytes) => bytes / (long)1000;
 }
