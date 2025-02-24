@@ -55,6 +55,7 @@
             if (file.Size > MAX_FILE_SIZE)
             {
                 _errorMessage = $"File is over {BytesToKiloBytes(MAX_FILE_SIZE)}KB limit!";
+                break;
             }
 
             try
