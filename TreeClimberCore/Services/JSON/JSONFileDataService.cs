@@ -30,7 +30,7 @@ namespace TreeClimberCore.Services.JSON
 			_changeCount = 0;
 			_file = file;
 			_fileContents = await ConvertFileContentsToJObjectAsync(file);
-			_initialContents = JToken.Parse(_fileContents.ToString());  // cannot simply set it to _fileContents because in C# it will create a reference
+			_initialContents = JToken.Parse(_fileContents.ToString());  // extract value from reference type
 		}
 
 		public int GetChangeCount() => _changeCount;
@@ -47,7 +47,7 @@ namespace TreeClimberCore.Services.JSON
 			if (_fileContents != null && _initialContents != null)
 			{
 				_changeCount = 0;
-				_fileContents = _initialContents;
+				_fileContents = JToken.Parse(_initialContents.ToString());  // extract value from reference type
 			}
 		}
 
