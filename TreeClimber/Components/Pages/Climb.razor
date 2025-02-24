@@ -17,6 +17,7 @@
     <ConditionalChangesMade ChangeCount=@jsonFileDataService.GetChangeCount() />
 
     <div>
+        <button class="secondary-btn" @onclick=@UndoChanges>&#8634; Undo All Changes</button>
         <button class="add-btn" @onclick=@DownloadFile><DownloadIcon Color="#fff" /> Download File</button>
     </div>
 }
@@ -70,26 +71,26 @@ else
 
 <script>
     window.downloadFileFromStream = async (fileName, contentStreamReference) => {
-        const arrayBuffer = await contentStreamReference.arrayBuffer();
-        const blob = new Blob([arrayBuffer]);
-        const url = URL.createObjectURL(blob);
-        const anchorElement = document.createElement('a');
-        anchorElement.href = url;
-        anchorElement.download = fileName ?? '';
-        anchorElement.click();
-        anchorElement.remove();
-        URL.revokeObjectURL(url);
+    const arrayBuffer = await contentStreamReference.arrayBuffer();
+    const blob = new Blob([arrayBuffer]);
+    const url = URL.createObjectURL(blob);
+    const anchorElement = document.createElement('a');
+    anchorElement.href = url;
+    anchorElement.download = fileName ?? '';
+    anchorElement.click();
+    anchorElement.remove();
+    URL.revokeObjectURL(url);
     }
 
-        window.clipboardCopy = {
-        copyText: function (text) {
-            navigator.clipboard.writeText(text).then(function () {
-                // alert("Copied to clipboard!");
-            })
-                .catch(function (error) {
-                    alert(error);
-                });
-        }
+    window.clipboardCopy = {
+    copyText: function (text) {
+    navigator.clipboard.writeText(text).then(function () {
+    // alert("Copied to clipboard!");
+    })
+    .catch(function (error) {
+    alert(error);
+    });
+    }
     };
 </script>
 
@@ -99,6 +100,11 @@ else
     private string? _pathFromEventClickArgs;
 
     public void ParentStateChange() => StateHasChanged();
+
+    private void UndoChanges()
+    {
+        jsonFileDataService.UndoAllChanges();
+    }
 
     private async Task DownloadFile()
     {

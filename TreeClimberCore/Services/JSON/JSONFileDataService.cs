@@ -17,6 +17,8 @@ namespace TreeClimberCore.Services.JSON
 
 		protected JToken? _fileContents = null;
 
+		protected JToken? _initialContents = null;
+
 		protected int _changeCount = 0;
 
 		/// <summary>
@@ -28,6 +30,7 @@ namespace TreeClimberCore.Services.JSON
 			_changeCount = 0;
 			_file = file;
 			_fileContents = await ConvertFileContentsToJObjectAsync(file);
+			_initialContents = JToken.Parse(_fileContents.ToString());  // cannot simply set it to _fileContents because in C# it will create a reference
 		}
 
 		public int GetChangeCount() => _changeCount;
@@ -39,14 +42,13 @@ namespace TreeClimberCore.Services.JSON
 
 		public string GetFileName() => _file.Name;
 
-		public IBrowserFile GetFile()
+		public void UndoAllChanges()
 		{
-			// suggested file size limit for memory stream is < 250MB
-			// FIXME: https://stackoverflow.com/questions/52748183/serialize-into-json-and-return-as-a-stream
-			// use this to convert JObject to memory stream
-			// FIXME: https://learn.microsoft.com/en-us/aspnet/core/blazor/file-downloads?view=aspnetcore-9.0
-			// use this to download a file from a memory stream
-			throw new NotImplementedException();
+			if (_fileContents != null && _initialContents != null)
+			{
+				_changeCount = 0;
+				_fileContents = _initialContents;
+			}
 		}
 
 		public MemoryStream GetFileAsMemoryStream()
