@@ -39,6 +39,15 @@ namespace TreeClimberCore.Services.JSON
 
 		public string GetFileName() => _file.Name;
 
+		public async Task UndoAllChanges()
+		{
+			if (_file != null)
+			{
+				_changeCount = 0;
+				_fileContents = await ConvertFileContentsToJObjectAsync(_file);
+			}
+		}
+
 		public MemoryStream GetFileAsMemoryStream()
 		{
 			var stream = new MemoryStream();
