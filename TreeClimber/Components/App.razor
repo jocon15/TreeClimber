@@ -24,14 +24,12 @@
     @*Blazor context menu references*@
     <link href="_content/Blazor.ContextMenu/blazorContextMenu.min.css" rel="stylesheet" />
     <script src="_content/Blazor.ContextMenu/blazorContextMenu.min.js"></script>
-    @*Blazored Toast references*@
-    <link href="TreeClimber.styles.css" rel="stylesheet"/>
 
-    <HeadOutlet />
+    <HeadOutlet @rendermode="InteractiveServer" />
 </head>
 
 <body>
-    <Routes />
+    <Routes @rendermode="InteractiveServer" />
     <script src="_framework/blazor.web.js"></script>
 </body>
 
