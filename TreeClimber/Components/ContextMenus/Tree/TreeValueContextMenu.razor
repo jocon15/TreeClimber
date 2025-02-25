@@ -2,10 +2,14 @@
 <ContextMenu Id="JValueContextMenu">
     <Item Enabled="false">Value Tools</Item>
     <Seperator />
+	<Item OnClick=@ShowPath><InfoIcon /> Show Path</Item>
 	<Item OnClick=@Rename><CursorIcon /> Rename</Item>
 </ContextMenu>
 
 @code {
+	[Parameter]
+	public EventCallback<ItemClickEventArgs> ShowPath { get; set; }
+
 	[Parameter]
 	public EventCallback<ItemClickEventArgs> Rename { get; set; }
 }

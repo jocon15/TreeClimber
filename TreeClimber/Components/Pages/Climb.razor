@@ -1,5 +1,4 @@
 ﻿@page "/climb"
-@rendermode InteractiveServer
 
 @inject JSONFileDataService jsonFileDataService
 @inject IJSRuntime jsRuntime
@@ -17,7 +16,7 @@
     <ConditionalChangesMade ChangeCount=@jsonFileDataService.GetChangeCount() />
 
     <div class="climb-button-container">
-        <button class="secondary-btn" @onclick=@UndoChanges>&#8634; Undo All Changes</button>
+        <button class="secondary-btn" @onclick=@UndoChanges><RestartIcon Color="#fff" /> Undo All Changes</button>
         <button class="add-btn" @onclick=@DownloadFile><DownloadIcon Color="#fff" /> Download File</button>
     </div>
 }
@@ -27,9 +26,9 @@ else
 }
 
 @*Context Menus*@
-<TreeObjectContextMenu Add=@OpenAddObjectElementModal Copy=@OpenCopyObjectElementModal Rename=@OpenRenameKeyModal Delete=@OpenDeleteObjectElementModal />
-<TreeArrayContextMenu Add=@OpenAddArrayElementModal Copy=@OpenCopyArrayElementModal Rename=@OpenRenameKeyModal Delete=@OpenDeleteArrayElementModal DeleteAll=@OpenDeleteAllArrayElementsModal />
-<TreeValueContextMenu Rename=@OpenRenameKeyModal />
+<TreeObjectContextMenu Add=@OpenAddObjectElementModal Copy=@OpenCopyObjectElementModal ShowPath=@ShowPath Rename=@OpenRenameKeyModal Delete=@OpenDeleteObjectElementModal />
+<TreeArrayContextMenu Add=@OpenAddArrayElementModal Copy=@OpenCopyArrayElementModal ShowPath=@ShowPath Rename=@OpenRenameKeyModal Delete=@OpenDeleteArrayElementModal DeleteAll=@OpenDeleteAllArrayElementsModal />
+<TreeValueContextMenu ShowPath=@ShowPath Rename=@OpenRenameKeyModal />
 
 @*Modals*@
 @if (_addObjectElementModalOpen == true)
@@ -114,6 +113,14 @@ else
         using var streamRef = new DotNetStreamReference(stream: fileStream);
 
         await jsRuntime.InvokeVoidAsync("downloadFileFromStream", fileName, streamRef);
+    }
+
+    private void ShowPath(ItemClickEventArgs e)
+    {
+        // get the path from the passed data
+        string path = e.Data as string;
+
+        toastService.ShowInfo($"Path: {path}");
     }
 
     // ======= Rename  Element Modal ======================
