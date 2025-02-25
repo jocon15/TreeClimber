@@ -4,6 +4,7 @@
 	<Seperator />
 	<Item OnClick=@Add><PencilIcon /> Add</Item>
 	<Item OnClick=@Copy><ClipboardIcon /> Copy</Item>
+	<Item OnClick=@ShowPath><InfoIcon /> Show Path</Item>
 	<Item OnClick=@Rename><CursorIcon /> Rename</Item>
 	<Item OnClick=@Delete><TrashIcon /> Delete</Item>
 </ContextMenu>
@@ -14,6 +15,9 @@
 
 	[Parameter]
 	public EventCallback<ItemClickEventArgs> Copy { get; set; }
+
+	[Parameter]
+	public EventCallback<ItemClickEventArgs> ShowPath { get; set; }
 
 	[Parameter]
 	public EventCallback<ItemClickEventArgs> Rename { get; set; }
