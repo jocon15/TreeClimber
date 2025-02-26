@@ -42,6 +42,12 @@
 
     private const int MAX_ALLOWED_FILES = 1;
 
+    protected override void OnInitialized()
+    {
+        // clear JFDS of any previous data
+        jsonFileDataService.Reset();
+    }
+
     private async Task LoadFile(InputFileChangeEventArgs e)
     {
         // clear any existing error messages
@@ -59,7 +65,7 @@
 
             try
             {
-                await jsonFileDataService.SetDataAsync(file);
+                await jsonFileDataService.SetFileAsync(file);
             }
             catch (Newtonsoft.Json.JsonReaderException)
             {

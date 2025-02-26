@@ -9,7 +9,7 @@
 
 @if (jsonFileDataService.GetFileContents() != null)
 {
-    <h3 class="climb-header">Edit File: @jsonFileDataService.GetFileName()</h3>
+    <h3 class="climb-header">Editing File: @jsonFileDataService.GetFileName()</h3>
 
     <TreeRecursion JSONToken=@jsonFileDataService.GetFileContents() OnParentStateChange=@ParentStateChange />
 
