@@ -21,16 +21,29 @@ namespace TreeClimberCore.Services.JSON
 
 		protected int _changeCount = 0;
 
-		/// <summary>
-		/// Mutator for the JSON data
-		/// </summary>
-		/// <param name="data"></param>
-		public async Task SetDataAsync(IBrowserFile file)
+		public async Task SetFileAsync(IBrowserFile file)
 		{
 			_changeCount = 0;
 			_file = file;
 			_fileContents = await ConvertFileContentsToJObjectAsync(file);
 			_initialContents = JToken.Parse(_fileContents.ToString());  // extract value from reference type
+		}
+
+		public void SetFile(IBrowserFile fileStub, JToken fileContents)
+		{
+			// used for loading sample JSON which is not actually a file - uses a file stub instead
+			_changeCount = 0;
+			_file = fileStub;
+			_fileContents = fileContents;
+			_initialContents = fileContents;
+		}
+
+		public void Reset()
+		{
+			_changeCount = 0;
+			_file = null;
+			_fileContents = null;
+			_initialContents = null;
 		}
 
 		public int GetChangeCount() => _changeCount;
