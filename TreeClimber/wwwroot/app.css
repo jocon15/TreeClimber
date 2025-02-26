@@ -2,6 +2,11 @@ html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
+.navmenu-title {
+    margin-left: 10px;
+    border: 0px;
+}
+
 a, .btn-link {
     color: #006bb7;
 }
