@@ -1,0 +1,40 @@
+﻿
+
+.sample-code-row {
+    display: flex;
+    gap: 20px;
+}
+
+.sample-code-row-item {
+    width: calc(100% / 2);
+}
+
+.sample-title {
+    margin-left: 10px;
+    color: #fff;
+    font-family: var(--application-font-family);
+}
+
+.sample-code-container {
+    padding-left: 20px;
+    background-color: #696969;
+    height: 600px;
+    overflow-y: auto;
+    border-radius: 25px;
+}
+
+.sample-code-green {
+    color: #72f77d;
+}
+
+.sample-code-orange {
+    color: #faca3c;
+}
+
+.sample-code-blue {
+    color: #b1b7fa;
+}
+
+.sample-code-red {
+    color: #ff7070;
+}

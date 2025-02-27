@@ -5,43 +5,66 @@
 
 <PageTitle>Samples</PageTitle>
 
-<h3 class="home-header">Try some sample JSON!</h3>
+<h3 class="home-header">Try Some Sample JSON!</h3>
 
-<div>
-    <button class="secondary-btn" @onclick=@LoadRecipe>Recipe</button>
-    <button class="secondary-btn" @onclick=@LoadQuiz>Quiz</button>
-    <button class="secondary-btn" @onclick=@LoadGlossory>Glossory</button>
+<div class="sample-code-row">
+    <div class="sample-code-row-item">
+        <h3 class="sample-title">Recipe</h3>
+        <div class="sample-code-container">
+            <pre><code class="sample-code-green">
+                    @SampleJSON.RECIPE_SAMPLE      
+                </code></pre>
+        </div>
+        <button class="secondary-btn" @onclick=@LoadRecipe><RocketIcon Color="#fff" /> Try it!</button>
+    </div>
+
+    <div class="sample-code-row-item">
+        <h3 class="sample-title">Quiz</h3>
+        <div class="sample-code-container">
+            <pre><code class="sample-code-orange">
+                    @SampleJSON.QUIZ_SAMPLE
+                </code></pre>
+        </div>
+        <button class="secondary-btn" @onclick=@LoadQuiz><RocketIcon Color="#fff" /> Try it!</button>
+    </div>
+</div>
+
+<Spacer Height=30 />
+
+<div class="sample-code-row">
+    <div class="sample-code-row-item">
+        <div class="sample-code-container">
+            <pre><code class="sample-code-blue">
+                    @SampleJSON.GLOSSORY_SAMPLE      
+                </code></pre>
+        </div>
+        <button class="secondary-btn" @onclick=@LoadGlossory><RocketIcon Color="#fff" /> Try it!</button>
+    </div>
+
+    <div class="sample-code-row-item">
+        <div class="sample-code-container">
+            <pre><code class="sample-code-red">
+                    @SampleJSON.SUPER_HERO_SAMPLE
+                </code></pre>
+        </div>
+        <button class="secondary-btn" @onclick=@LoadSuperHero><RocketIcon Color="#fff" /> Try it!</button>
+    </div>
 </div>
 
 @code {
+    public void LoadRecipe() => Climb("recipe.json", SampleJSON.RECIPE_SAMPLE);
 
-    public void LoadRecipe()
+    public void LoadQuiz() => Climb("quiz.json", SampleJSON.QUIZ_SAMPLE);
+
+    public void LoadGlossory() => Climb("glossory.json", SampleJSON.GLOSSORY_SAMPLE);
+
+    public void LoadSuperHero() => Climb("super_hero.json", SampleJSON.SUPER_HERO_SAMPLE);
+
+    private void Climb(string fileName, string fileContentsString)
     {
-        IBrowserFile fileStub = new BrowserFileStub("recipe.json");
+        IBrowserFile fileStub = new BrowserFileStub(fileName);
 
-        JToken fileContents = JToken.Parse(SampleJSON.RECIPE_SAMPLE);
-
-        jsonFileDataService.SetFile(fileStub, fileContents);
-
-        navManager.NavigateTo("/climb");
-    }
-
-    public void LoadQuiz()
-    {
-        IBrowserFile fileStub = new BrowserFileStub("quiz.json");
-
-        JToken fileContents = JToken.Parse(SampleJSON.QUIZ_SAMPLE);
-
-        jsonFileDataService.SetFile(fileStub, fileContents);
-
-        navManager.NavigateTo("/climb");
-    }
-
-    public void LoadGlossory()
-    {
-        IBrowserFile fileStub = new BrowserFileStub("glossory.json");
-
-        JToken fileContents = JToken.Parse(SampleJSON.GLOSSORY_SAMPLE);
+        JToken fileContents = JToken.Parse(fileContentsString);
 
         jsonFileDataService.SetFile(fileStub, fileContents);
 
