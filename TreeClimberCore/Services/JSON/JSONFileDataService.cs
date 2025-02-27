@@ -46,6 +46,8 @@ namespace TreeClimberCore.Services.JSON
 			_initialContents = null;
 		}
 
+		public bool IsFileSet() => _file != null;
+
 		public int GetChangeCount() => _changeCount;
 
 		public JToken? GetFileContents()

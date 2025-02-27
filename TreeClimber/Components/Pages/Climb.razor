@@ -98,6 +98,15 @@ else
 
     private string? _pathFromEventClickArgs;
 
+    protected override void OnInitialized()
+    {
+        // if file has not been set, prevent the loading bar from loading endlessly byt navigating back to the importer
+        if (!jsonFileDataService.IsFileSet())
+        {
+            navManager.NavigateTo("/");
+        }
+    }
+
     public void ParentStateChange() => StateHasChanged();
 
     private void UndoChanges()
