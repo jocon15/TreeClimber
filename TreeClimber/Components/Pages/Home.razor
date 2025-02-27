@@ -11,12 +11,10 @@
     <text class="hint inline-hint">v@_version</text>
 </div>
 
-<p>
-    <text class="hint">10KB limit</text>
-    <div>
-        <InputFile OnChange="LoadFile" class="form-control" accept=".json"/>
-    </div>
-</p>
+<text class="hint">10KB limit</text>
+<div class="json-input-container">
+    <InputFile OnChange="LoadFile" class="form-control" accept=".json"/>
+</div>
 
 @if (jsonFileDataService.GetFileContents() != null && jsonFileDataService.GetFileContents() == null)
 {
