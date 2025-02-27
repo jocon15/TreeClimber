@@ -11,6 +11,15 @@
 {
     <h3 class="climb-header">Editing File: @jsonFileDataService.GetFileName()</h3>
 
+    @if (_isExpanded == true)
+    {
+        <button @onclick=@ToggleFolding class="secondary-btn"><ChevronRightIcon Color="#fff" /> Collapse All</button>
+    }
+    else
+    {
+        <button @onclick=@ToggleFolding class="secondary-btn"><ChevronDownIcon Color="#fff" /> Expand All</button>
+    }
+
     <TreeRecursion JSONToken=@jsonFileDataService.GetFileContents() OnParentStateChange=@ParentStateChange />
 
     <ConditionalChangesMade ChangeCount=@jsonFileDataService.GetChangeCount() />
@@ -90,11 +99,13 @@ else
     alert(error);
     });
     }
-    };
+    };    
 </script>
 
 @code {
     protected string _path = "";
+
+    private bool _isExpanded = false;
 
     private string? _pathFromEventClickArgs;
 
@@ -112,6 +123,19 @@ else
     private void UndoChanges()
     {
         jsonFileDataService.UndoAllChanges();
+    }
+
+    private async Task ToggleFolding()
+    {
+        if (_isExpanded == true)
+        {
+            await jsRuntime.InvokeVoidAsync("TREE_FUNCTIONS.collapseAll");
+        }
+        else
+        {
+            await jsRuntime.InvokeVoidAsync("TREE_FUNCTIONS.expandAll");
+        }
+        _isExpanded = !_isExpanded;
     }
 
     private async Task DownloadFile()
