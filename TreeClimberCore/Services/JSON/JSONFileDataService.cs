@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components.Forms;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.Text.Json.Nodes;
 using System.Text.RegularExpressions;
 using TreeClimberCore.Services.Path;
 using TreeClimberCore.Util;
@@ -118,8 +119,13 @@ namespace TreeClimberCore.Services.JSON
 			}
 
 			string keyPath = BuildNewtonsoftKeyPath(path);
-			// JToken.Parse(X.ToString()) ensures a value is returned and not a reference (reference is bad)
-			return Tuple.Create(ResponseUtil.OK, "", JToken.Parse(_fileContents.SelectToken(keyPath).ToString()));
+
+			JToken selectedTokenReference = _fileContents.SelectToken(keyPath);
+
+			// copy the token to avoid returing the reference from SelectToken
+			JToken selectedTokenValue = selectedTokenReference.DeepClone();
+
+			return Tuple.Create(ResponseUtil.OK, "", selectedTokenValue);
 		}
 
 		/// <summary>
