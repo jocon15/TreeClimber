@@ -7,6 +7,17 @@ body {
     background-color: #2e2e2e;
 }
 
+.nav-menu-container {
+    display: flex;
+}
+
+.nav-menu-title {
+    color: #fff;
+    font-family: var(--application-font-family);
+    margin-left: 8px;
+    font-size: 22px;
+}
+
 .normal-text{
     color: #fff;
     font-family: var(--application-font-family);
