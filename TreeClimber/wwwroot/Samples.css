@@ -1,6 +1,4 @@
-﻿
-
-.sample-code-row {
+﻿.sample-code-row {
     display: flex;
     gap: 20px;
 }
@@ -21,7 +19,14 @@
     height: 600px;
     overflow-y: auto;
     border-radius: 25px;
+    overflow-y: scroll;
+    scrollbar-width: none; /* Remove Firefox scrollbar*/
+    -ms-overflow-style: none; /* Remove Internet Explorer 10+ scrollbar*/
 }
+    .sample-code-container::-webkit-scrollbar { /* Remove WebKit scrollbar*/
+        width: 0;
+        height: 0;
+    }
 
 .sample-code-green {
     color: #72f77d;
