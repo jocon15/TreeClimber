@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components.Forms;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System.Text.Json.Nodes;
 using System.Text.RegularExpressions;
 using TreeClimberCore.Services.Path;
 using TreeClimberCore.Util;
@@ -10,6 +9,8 @@ namespace TreeClimberCore.Services.JSON
 {
 	public class JSONFileDataService
 	{
+		public const long MAX_FILE_SIZE = 10240;  // 10 KB
+
 		public const string TEMPLATE = "template";
 
 		private static readonly List<string> _jsonSymbols = new List<string> { "[", "]", "{", "}", "\"" };
@@ -85,7 +86,7 @@ namespace TreeClimberCore.Services.JSON
 		protected static async Task<JToken> ConvertFileContentsToJObjectAsync(IBrowserFile file)
 		{
 			string fileContents;
-			using (var stream = file.OpenReadStream())
+			using (var stream = file.OpenReadStream(maxAllowedSize: MAX_FILE_SIZE))
 			using (var reader = new StreamReader(stream))
 			{
 				fileContents = await reader.ReadToEndAsync();
