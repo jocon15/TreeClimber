@@ -59,6 +59,6 @@
     private async Task CopyTextToClipboard(string text)
     {
         // reminder this js function is implemented in Pages/_Host.cshtml
-        await JSRuntime.InvokeVoidAsync("clipboardCopy.copyText", text);
+        await JSRuntime.InvokeVoidAsync("TREE_FUNCTIONS.clipboardCopy", text);
     }
 }
