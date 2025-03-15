@@ -11,7 +11,7 @@
     <text class="hint inline-hint">v@_version</text>
 </div>
 
-<text class="hint">10KB limit</text>
+<text class="hint">@(BytesToKiloBytes(JSONFileDataService.MAX_FILE_SIZE))KB limit</text>
 <div class="json-input-container">
     <InputFile OnChange="LoadFile" class="form-control" accept=".json"/>
 </div>
@@ -36,8 +36,6 @@
 
     private string _errorMessage = "";
 
-    private const long MAX_FILE_SIZE = 10000; // ~500KB
-
     private const int MAX_ALLOWED_FILES = 1;
 
     protected override void OnInitialized()
@@ -55,12 +53,6 @@
 
         foreach (var file in e.GetMultipleFiles(MAX_ALLOWED_FILES))
         {
-            if (file.Size > MAX_FILE_SIZE)
-            {
-                _errorMessage = $"File is over {BytesToKiloBytes(MAX_FILE_SIZE)}KB limit!";
-                break;
-            }
-
             try
             {
                 await jsonFileDataService.SetFileAsync(file);
