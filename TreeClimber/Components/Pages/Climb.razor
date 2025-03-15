@@ -77,31 +77,6 @@ else
     <ModalDeleteAllElements Path=@_pathFromEventClickArgs OnClose=@OnDeleteAllArrayElementsModalClose />
 }
 
-<script>
-    window.downloadFileFromStream = async (fileName, contentStreamReference) => {
-    const arrayBuffer = await contentStreamReference.arrayBuffer();
-    const blob = new Blob([arrayBuffer]);
-    const url = URL.createObjectURL(blob);
-    const anchorElement = document.createElement('a');
-    anchorElement.href = url;
-    anchorElement.download = fileName ?? '';
-    anchorElement.click();
-    anchorElement.remove();
-    URL.revokeObjectURL(url);
-    }
-
-    window.clipboardCopy = {
-    copyText: function (text) {
-    navigator.clipboard.writeText(text).then(function () {
-    // alert("Copied to clipboard!");
-    })
-    .catch(function (error) {
-    alert(error);
-    });
-    }
-    };    
-</script>
-
 @code {
     protected string _path = "";
 
@@ -145,7 +120,7 @@ else
 
         using var streamRef = new DotNetStreamReference(stream: fileStream);
 
-        await jsRuntime.InvokeVoidAsync("downloadFileFromStream", fileName, streamRef);
+        await jsRuntime.InvokeVoidAsync("TREE_FUNCTIONS.downloadFileFromStream", fileName, streamRef);
     }
 
     private void ShowPath(ItemClickEventArgs e)
