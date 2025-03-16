@@ -1,0 +1,60 @@
+﻿@page "/"
+
+@inject NavigationManager navManager
+
+<div class="inline-header-container">
+    <h3 class="home-header">Welcome to Tree Climber!</h3>
+    <text class="hint inline-hint">v@_version</text>
+</div>
+
+<Spacer Height=20 />
+
+<h3 class="about-text-header">What Is It?</h3>
+
+<p class="about-text">
+    Tree Climber is a Blazor web app that allows you to edit JSON files in an expanding tree view.
+</p>
+
+<h3 class="about-text-header">Why Use It?</h3>
+
+<p class="about-text">
+    Issue 1: Text editors and IDEs provide a raw-file method for viewing and editing JSON. These tools lack robust editing tools needed to quickly and efficicently 
+    edit JSON. Users are limited to traditional text-editor functions like copy/paste. When dealing with larger data, the structure becomes confusing, 
+    leading to the creation of malformed JSON when copy/pasting. Also, larger JSON files become increasingly difficult to navigate.
+</p>
+
+<p class="about-text">
+    Issue 2: Some of the more featured tools like Notepad++ allow you to view the tree structure in an expanding tree view window. While this view is appreciated 
+    by users, they cannot edit the JSON data from this view. This makes the view useless for users looking to edit the data.
+</p>
+
+<p class="about-text">
+    Solution: Tree Climber merges an expanding tree view with a set of robust editing features. Users get all of the ergonomics of the expanding tree view with the
+    added ability to edit the JSON quickly and easily. Tree Climber's editing features make it easy to make changes without the fear of breaking the structure. 
+    Simply upload your JSON file, make changes, and download it to your device.
+</p>
+
+<h3 class="about-text-header">Get Started</h3>
+
+<p class="about-text">
+    Click <a href="/samples">here</a> to try some samples or <a href="/import">here</a> to import your own file.
+</p>
+
+<p class="about-text">
+    Have fun!
+</p>
+
+
+@code {
+    private string _version = "0.3.0";
+
+    private void RouteToSamples()
+    {
+        navManager.NavigateTo("/samples");
+    }
+
+    private void RouteToImport()
+    {
+        navManager.NavigateTo("/import");
+    }
+}
