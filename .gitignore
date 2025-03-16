@@ -351,3 +351,8 @@ __pycache__/
 *.pyc
 
 specifications/
+
+.env
+
+# Publish profiles
+PublishProfiles/
