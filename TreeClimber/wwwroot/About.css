@@ -1,0 +1,14 @@
+﻿:root {
+    --application-orange: #e97232;
+}
+
+.about-text-header {
+    color: var(--application-orange);
+    font-family: var(--application-font-family);
+}
+
+.about-text {
+    color: white;
+    font-family: var(--application-font-family);
+    max-width: 75%;
+}
