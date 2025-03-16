@@ -1,4 +1,4 @@
-﻿@page "/"
+﻿@page "/import"
 
 @inject IWebHostEnvironment Environment
 @inject JSONFileDataService jsonFileDataService
@@ -6,9 +6,8 @@
 
 <PageTitle>Home</PageTitle>
 
-<div class="inline-header-container">
-    <h3 class="home-header">Welcome to Tree Climber!</h3>
-    <text class="hint inline-hint">v@_version</text>
+<div>
+    <h3 class="home-header">Import a JSON File</h3>
 </div>
 
 <text class="hint">@(BytesToKiloBytes(JSONFileDataService.MAX_FILE_SIZE))KB limit</text>
@@ -32,8 +31,6 @@
 }
 
 @code {
-    private string _version = "0.2.0";
-
     private string _errorMessage = "";
 
     private const int MAX_ALLOWED_FILES = 1;
