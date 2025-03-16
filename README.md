@@ -1,15 +1,21 @@
+<p align="center">
+    <img src ="https://img.shields.io/badge/version-0.3.0-blueviolet.svg"/> <img src ="https://img.shields.io/github/license/jocon15/TreeClimber.svg?color=orange"/>
+</p>
+
 # Tree Climber
 
-Tree Climber is a Blazor Server application that lets you manipulate your JSON files in an expaning binary tree format.
+### A Blazor web app for manipulating JSON files with and expanding tree view.
 
-Text editors allow you to edit raw JSON, but it lacks the robust features that you need to manipulate your JSON data.
+<p align="center">
+    <img src="https://github.com/jocon15/TreeClimber/blob/master/images/climb.gif" />
+</p>
 
-With Tree Climber, we present the JSON in an expaning tree view and provide a robust feature set for you to edit you JSON quick and easy.
+# Why Use It?
+Issue 1: Text editors and IDEs provide a raw-file method for viewing and editing JSON. These tools lack robust editing tools needed to quickly and efficicently edit JSON. Users are limited to traditional text-editor functions like copy/paste. When dealing with larger data, the structure becomes confusing, leading to the creation of malformed JSON when copy/pasting. Also, larger JSON files become increasingly difficult to navigate.
 
+Issue 2: Some of the more featured tools like Notepad++ allow you to view the tree structure in an expanding tree view window. While this view is appreciated by users, they cannot edit the JSON data from this view. This makes the view useless for users looking to edit the data.
 
+Solution: Tree Climber merges an expanding tree view with a set of robust editing features. Users get all of the ergonomics of the expanding tree view with the added ability to edit the JSON quickly and easily. Tree Climber's editing features make it easy to make changes without the fear of breaking the structure. Simply upload your JSON file, make changes, and download it to your device.
 
-#### Copy and Paste
-
-Current text editors allow you to copy and paste JSON structures, but you may run into issues of formatting and making sure you have those pesky commas after each element. With Tree Climber's copy from exisitng element, you can perform the same operation but without all the formatting headache.
-
-
+# Get Started
+Click here to try it out.
