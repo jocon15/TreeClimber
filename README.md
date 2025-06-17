@@ -11,7 +11,7 @@
 </p>
 
 # Why Use It?
-Issue 1: Text editors and IDEs provide a raw-file method for viewing and editing JSON. These tools lack robust editing tools needed to quickly and efficicently edit JSON. Users are limited to traditional text-editor functions like copy/paste. When dealing with larger data, the structure becomes confusing, leading to the creation of malformed JSON when copy/pasting. Also, larger JSON files become increasingly difficult to navigate.
+Issue 1: Text editors and IDEs provide a raw-file method for viewing and editing JSON. These tools lack robust editing tools needed to quickly and efficiently edit JSON. Users are limited to traditional text-editor functions like copy/paste. When dealing with larger data, the structure becomes confusing, leading to the creation of malformed JSON when copy/pasting. Also, larger JSON files become increasingly difficult to navigate.
 
 Issue 2: Some of the more featured tools like Notepad++ allow you to view the tree structure in an expanding tree view window. While this view is appreciated by users, they cannot edit the JSON data from this view. This makes the view useless for users looking to edit the data.
 
