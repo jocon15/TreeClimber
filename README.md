@@ -4,7 +4,7 @@
 
 # Tree Climber
 
-### A Blazor web app for manipulating JSON files with and expanding tree view.
+### A Blazor web app for manipulating JSON files with an expanding tree view.
 
 <p align="center">
     <img src="https://github.com/jocon15/TreeClimber/blob/master/images/climb.gif" />
